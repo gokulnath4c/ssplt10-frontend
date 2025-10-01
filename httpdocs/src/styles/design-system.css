@@ -1,0 +1,680 @@
+/**
+ * SSPLT10 Design System - CSS Custom Properties & Design Tokens
+ *
+ * This file contains the complete design token system for the SSPLT10 website.
+ * All CSS custom properties are organized by category for easy maintenance and consistency.
+ *
+ * Last Updated: September 23, 2025
+ * Version: 2.0.0
+ * Design System Lead: SSPLT10 Development Team
+ */
+
+/* ===============================================
+   🎨 COLOR SYSTEM
+   =============================================== */
+
+/* Core Brand Colors */
+:root {
+  /* Primary Colors */
+  --color-primary: 142 76% 23%;                    /* #1DB954 - Vibrant cricket green */
+  --color-primary-light: 142 50% 55%;              /* #5FD068 - Light green for highlights */
+  --color-primary-dark: 142 76% 15%;               /* #0F8F3A - Dark green for depth */
+
+  /* Secondary Colors */
+  --color-secondary: 217 91% 35%;                  /* #0066CC - Professional blue */
+  --color-secondary-light: 217 70% 55%;            /* #3A8AE8 - Light blue for interactions */
+  --color-secondary-dark: 220 100% 25%;            /* #003366 - Deep blue for headers */
+
+  /* Accent Colors */
+  --color-accent: 25 100% 65%;                     /* #FF6600 - Vibrant orange */
+  --color-accent-light: 25 100% 75%;               /* #FF9933 - Light orange for highlights */
+  --color-accent-dark: 25 100% 55%;                /* #E55A00 - Dark orange for depth */
+
+  /* Semantic Colors */
+  --color-success: 142 76% 45%;                    /* #1DB954 - Success green */
+  --color-success-foreground: 0 0% 100%;           /* #FFFFFF - White text on success */
+
+  --color-warning: 45 100% 55%;                     /* #FFD700 - Warning gold */
+  --color-warning-foreground: 220 15% 20%;          /* #2D2D2D - Dark text on warning */
+
+  --color-error: 0 100% 50%;                        /* #FF0000 - Error red */
+  --color-error-foreground: 0 0% 100%;              /* #FFFFFF - White text on error */
+
+  --color-info: 217 91% 45%;                        /* #0066CC - Info blue */
+  --color-info-foreground: 0 0% 100%;               /* #FFFFFF - White text on info */
+
+  /* Neutral Colors */
+  --color-background: 0 0% 100%;                    /* #FFFFFF - Primary background */
+  --color-foreground: 222.2 84% 4.9%;               /* #0A0A0A - Primary text */
+  --color-muted: 210 40% 96.1%;                     /* #F8F9FA - Muted backgrounds */
+  --color-muted-foreground: 215.4 16.3% 46.9%;     /* #6B7280 - Muted text */
+
+  /* Border and Input Colors */
+  --color-border: 214.3 31.8% 91.4%;               /* #E5E7EB - Default borders */
+  --color-input: 214.3 31.8% 91.4%;                 /* #E5E7EB - Input backgrounds */
+  --color-ring: 142 76% 50%;                        /* #1DB954 - Focus ring color */
+
+  /* Dark Theme Variations */
+  --color-primary-dark-mode: 142 50% 55%;           /* #5FD068 - Dark mode green */
+  --color-secondary-dark-mode: 217 70% 55%;         /* #3A8AE8 - Dark mode blue */
+  --color-accent-dark-mode: 25 100% 55%;            /* #E55A00 - Dark mode orange */
+  --color-background-dark: 222.2 84% 4.9%;          /* #0A0A0A - Dark background */
+  --color-card-dark: 222.2 84% 4.9%;                /* #0A0A0A - Dark card background */
+
+  /* Legacy Color Aliases for Backward Compatibility */
+  --sport-green: var(--color-primary);
+  --sport-blue: var(--color-secondary);
+  --sport-orange: var(--color-accent);
+  --sport-light: var(--color-background);
+  --sport-dark: 220 15% 20%;
+  --sport-white: 0 0% 100%;
+  --sport-gray: 220 10% 95%;
+  --sport-charcoal: 220 15% 20%;
+  --sport-gold: var(--color-warning);
+  --sport-red: var(--color-error);
+  --sport-purple: 260 60% 65%;
+  --sport-navy: var(--color-secondary-dark);
+  --sport-mint: 160 70% 90%;
+  --sport-lavender: 260 60% 95%;
+  --sport-teal: 180 100% 25%;  /* #00C8C8 - Teal for secondary buttons */
+}
+
+/* ===============================================
+   📝 TYPOGRAPHY SYSTEM
+   =============================================== */
+
+/* Font Families */
+:root {
+  /* Display & Heading Fonts */
+  --font-display: 'Bebas Neue', 'Oswald', 'Poppins', system-ui, sans-serif;
+  --font-heading: 'Oswald', 'Poppins', system-ui, sans-serif;
+
+  /* Body Font */
+  --font-body: 'Poppins', 'Montserrat', system-ui, sans-serif;
+
+  /* Font Weights */
+  --font-weight-thin: 100;        /* Thin */
+  --font-weight-light: 300;       /* Light */
+  --font-weight-normal: 400;      /* Normal */
+  --font-weight-medium: 500;      /* Medium */
+  --font-weight-semibold: 600;    /* Semi-bold */
+  --font-weight-bold: 700;        /* Bold */
+  --font-weight-extrabold: 800;   /* Extra-bold */
+  --font-weight-black: 900;       /* Black */
+
+  /* Line Heights */
+  --line-height-tight: 1.1;       /* Tight spacing */
+  --line-height-normal: 1.5;      /* Normal spacing */
+  --line-height-relaxed: 1.6;     /* Relaxed spacing */
+  --line-height-loose: 1.75;      /* Loose spacing */
+
+  /* Letter Spacing */
+  --letter-spacing-tight: -0.02em;    /* Tight spacing */
+  --letter-spacing-normal: 0em;       /* Normal spacing */
+  --letter-spacing-wide: 0.05em;      /* Wide spacing */
+  --letter-spacing-wider: 0.1em;      /* Extra wide spacing */
+}
+
+/* Typography Scale - Desktop */
+:root {
+  /* Display Sizes (Hero, Major Headlines) */
+  --text-display-4xl: clamp(2.5rem, 5vw, 4rem);    /* 40px - 64px */
+  --text-display-3xl: clamp(2rem, 4vw, 3rem);      /* 32px - 48px */
+  --text-display-2xl: clamp(1.5rem, 3vw, 2.5rem);  /* 24px - 40px */
+
+  /* Heading Hierarchy */
+  --text-h1: clamp(2rem, 4vw, 3rem);               /* 32px - 48px */
+  --text-h2: clamp(1.5rem, 3vw, 2.25rem);          /* 24px - 36px */
+  --text-h3: clamp(1.25rem, 2.5vw, 1.875rem);      /* 20px - 30px */
+  --text-h4: clamp(1.125rem, 2vw, 1.5rem);         /* 18px - 24px */
+  --text-h5: clamp(1rem, 1.8vw, 1.25rem);          /* 16px - 20px */
+  --text-h6: clamp(0.875rem, 1.5vw, 1.125rem);     /* 14px - 18px */
+
+  /* Body Text Sizes */
+  --text-body-large: 1.125rem;                     /* 18px */
+  --text-body: 1rem;                               /* 16px */
+  --text-body-small: 0.875rem;                     /* 14px */
+  --text-caption: 0.75rem;                         /* 12px */
+}
+
+/* Typography Scale - Mobile */
+:root {
+  /* Mobile Display Sizes */
+  --text-mobile-display: clamp(1.75rem, 8vw, 2.5rem);  /* 28px - 40px */
+  --text-mobile-h1: clamp(1.5rem, 6vw, 2rem);          /* 24px - 32px */
+  --text-mobile-h2: clamp(1.25rem, 5vw, 1.75rem);       /* 20px - 28px */
+  --text-mobile-h3: clamp(1.125rem, 4vw, 1.5rem);       /* 18px - 24px */
+
+  /* Mobile Body Text */
+  --text-mobile-body: clamp(0.875rem, 4vw, 1rem);      /* 14px - 16px */
+  --text-mobile-small: clamp(0.75rem, 3vw, 0.875rem);   /* 12px - 14px */
+}
+
+/* ===============================================
+   📏 LAYOUT & SPACING SYSTEM
+   =============================================== */
+
+/* Section Spacing */
+:root {
+  /* Desktop Section Spacing */
+  --section-hero: 120px;              /* Hero sections */
+  --section-main: 80px;               /* Main content sections */
+  --section-compact: 60px;            /* Compact sections */
+  --section-minimal: 40px;            /* Minimal sections */
+
+  /* Mobile Section Spacing */
+  --section-hero-mobile: 80px;        /* Mobile hero sections */
+  --section-main-mobile: 40px;        /* Mobile main sections */
+  --section-compact-mobile: 30px;     /* Mobile compact sections */
+  --section-minimal-mobile: 20px;     /* Mobile minimal sections */
+}
+
+/* Grid System */
+:root {
+  /* Grid Gutters */
+  --grid-gutter-desktop: 24px;        /* Desktop gutter */
+  --grid-gutter-tablet: 20px;         /* Tablet gutter */
+  --grid-gutter-mobile: 16px;         /* Mobile gutter */
+
+  /* Container Max Widths */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+  --container-2xl: 1536px;
+}
+
+/* Spacing Scale */
+:root {
+  /* Consistent spacing using rem units */
+  --space-xs: 0.25rem;    /* 4px */
+  --space-sm: 0.5rem;     /* 8px */
+  --space-md: 1rem;       /* 16px */
+  --space-lg: 1.5rem;     /* 24px */
+  --space-xl: 2rem;       /* 32px */
+  --space-2xl: 3rem;      /* 48px */
+  --space-3xl: 4rem;      /* 64px */
+  --space-4xl: 5rem;      /* 80px */
+  --space-5xl: 6rem;      /* 96px */
+}
+
+/* ===============================================
+   🎭 ANIMATION & TRANSITION SYSTEM
+   =============================================== */
+
+/* Transition Timings */
+:root {
+  /* Hover Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Animation Durations */
+  --animation-fast: 0.15s;
+  --animation-normal: 0.3s;
+  --animation-slow: 0.5s;
+  --animation-slower: 1s;
+
+  /* Easing Functions */
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Animation Keyframes */
+:root {
+  /* Loading Animations */
+  --animation-spin-duration: 1s;
+  --animation-pulse-duration: 2s;
+  --animation-bounce-duration: 0.6s;
+
+  /* Hover Effects */
+  --animation-lift-duration: 0.3s;
+  --animation-slide-duration: 0.3s;
+  --animation-fade-duration: 0.3s;
+
+  /* Micro-interactions */
+  --animation-click-duration: 0.1s;
+  --animation-success-duration: 0.6s;
+}
+
+/* ===============================================
+   📱 RESPONSIVE BREAKPOINTS
+   =============================================== */
+
+/* Breakpoint System */
+:root {
+  --breakpoint-xs: 475px;    /* Extra small devices */
+  --breakpoint-sm: 640px;    /* Small devices (phones) */
+  --breakpoint-md: 768px;    /* Medium devices (tablets) */
+  --breakpoint-lg: 1024px;   /* Large devices (desktops) */
+  --breakpoint-xl: 1280px;   /* Extra large devices */
+  --breakpoint-2xl: 1536px;  /* Ultra-wide devices */
+  --breakpoint-3xl: 1920px;  /* Large ultra-wide */
+}
+
+/* ===============================================
+   ♿ ACCESSIBILITY
+   =============================================== */
+
+/* Focus Ring */
+:root {
+  --focus-ring-width: 3px;
+  --focus-ring-offset: 2px;
+  --focus-ring-color: hsl(var(--color-primary));
+  --focus-ring-style: solid;
+  --focus-ring-radius: 4px;
+}
+
+/* Contrast Ratios (WCAG 2.1 AA Compliant) */
+:root {
+  --contrast-primary-text: 16.94;     /* Exceeds AAA */
+  --contrast-secondary-text: 7.12;    /* Exceeds AA */
+  --contrast-interactive: 4.52;       /* Exceeds AA */
+  --contrast-focus: 3.18;             /* Exceeds AA */
+}
+
+/* ===============================================
+   🎨 SHADOW SYSTEM
+   =============================================== */
+
+/* Shadow Scale */
+:root {
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+
+  /* Sport-themed Shadows */
+  --shadow-sport: 0 4px 20px rgba(29, 185, 84, 0.3), 0 2px 10px rgba(29, 185, 84, 0.2);
+  --shadow-sport-lg: 0 10px 25px rgba(29, 185, 84, 0.4);
+  --shadow-accent: 0 4px 20px rgba(255, 102, 0, 0.3), 0 2px 10px rgba(255, 102, 0, 0.2);
+  --shadow-accent-lg: 0 10px 25px rgba(255, 102, 0, 0.4);
+}
+
+/* ===============================================
+   🎯 BORDER RADIUS SYSTEM
+   =============================================== */
+
+/* Border Radius Scale */
+:root {
+  --radius-none: 0;
+  --radius-sm: 0.125rem;     /* 2px */
+  --radius-md: 0.375rem;     /* 6px */
+  --radius-lg: 0.5rem;       /* 8px */
+  --radius-xl: 0.75rem;      /* 12px */
+  --radius-2xl: 1rem;        /* 16px */
+  --radius-3xl: 1.5rem;      /* 24px */
+  --radius-full: 9999px;     /* Fully rounded */
+}
+
+/* ===============================================
+   📐 Z-INDEX SCALE
+   =============================================== */
+
+/* Z-Index Scale */
+:root {
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  --z-toast: 1080;
+  --z-max: 2147483647;      /* Maximum z-index */
+}
+
+/* ===============================================
+   🎨 GRADIENT SYSTEM
+   =============================================== */
+
+/* Gradient Definitions */
+:root {
+  --gradient-primary: linear-gradient(135deg, hsl(var(--color-primary)) 0%, hsl(var(--color-secondary)) 100%);
+  --gradient-accent: linear-gradient(135deg, hsl(var(--color-accent)) 0%, hsl(var(--color-primary)) 100%);
+  --gradient-hero: linear-gradient(135deg, hsl(var(--color-primary) / 0.1) 0%, hsl(var(--color-secondary) / 0.1) 50%, hsl(var(--color-accent) / 0.1) 100%);
+  --gradient-success: linear-gradient(135deg, hsl(var(--color-success)) 0%, hsl(var(--color-primary)) 100%);
+  --gradient-warning: linear-gradient(135deg, hsl(var(--color-warning)) 0%, hsl(var(--color-accent)) 100%);
+  --gradient-error: linear-gradient(135deg, hsl(var(--color-error)) 0%, hsl(var(--color-accent-dark)) 100%);
+  --gradient-info: linear-gradient(135deg, hsl(var(--color-info)) 0%, hsl(var(--color-secondary)) 100%);
+
+  /* Glassmorphism Gradients */
+  --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  --gradient-glass-dark: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+
+  /* Sport-themed Gradients */
+  --gradient-energy: linear-gradient(45deg, hsl(var(--color-secondary)) 0%, hsl(var(--color-primary)) 50%, hsl(var(--color-accent)) 100%);
+  --gradient-stadium: linear-gradient(180deg, hsl(var(--color-accent) / 0.1) 0%, hsl(var(--color-primary) / 0.05) 100%);
+  --gradient-sunset: linear-gradient(135deg, hsl(var(--color-accent)) 0%, hsl(var(--color-warning)) 100%);
+  --gradient-ocean: linear-gradient(135deg, hsl(var(--color-secondary)) 0%, hsl(var(--color-secondary-dark)) 100%);
+}
+
+/* ===============================================
+    📱 COMPONENT SPECIFIC TOKENS
+    =============================================== */
+
+/* Hero Section Specific Styles */
+.hero-section {
+  position: relative;
+  min-height: var(--hero-min-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--gradient-hero);
+  z-index: var(--hero-z-index);
+}
+
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/ravi mohan home with bg.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 1200px;
+  padding: 0 2rem;
+  color: hsl(var(--color-background));
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: var(--text-display-4xl);
+  font-weight: var(--font-weight-black);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+/* Mobile Hero Adjustments */
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: var(--hero-mobile-height);
+  }
+
+  .hero-background {
+    background-attachment: scroll;
+    background-size: cover;
+    background-position: center center;
+  }
+
+  .hero-content {
+    padding: 0 1rem;
+  }
+
+  .hero-title {
+    font-size: var(--text-mobile-display);
+    margin-bottom: 1rem;
+  }
+
+  .hero-subtitle {
+    font-size: var(--text-mobile-h2);
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Button Hover Effects */
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sport-lg);
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 200, 200, 0.3);
+}
+
+/* GPU Acceleration Utilities */
+.gpu-accelerated {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
+  transform: translateZ(0);
+}
+
+.hover-lift {
+  transition: transform var(--transition-normal) var(--ease-out);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+/* Pulse Glow Animation */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 102, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 102, 0, 0.8);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Navigation */
+:root {
+  --nav-height-desktop: 80px;
+  --nav-height-mobile: 64px;
+  --nav-z-index: 50;
+  --nav-backdrop-blur: 20px;
+}
+
+/* Hero Section */
+:root {
+  --hero-min-height: 100vh;
+  --hero-mobile-height: 90vh;
+  --hero-z-index: 10;
+}
+
+/* Cards */
+:root {
+  --card-border-radius: 0.75rem;
+  --card-padding: 1.5rem;
+  --card-hover-lift: -4px;
+  --card-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Card Specific Tokens */
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --card-shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.15);
+  --card-accent-height: 4px;
+  --card-accent-gradient: linear-gradient(90deg, hsl(var(--color-accent)), hsl(var(--color-secondary)));
+
+  /* Card Variants */
+  --card-fixture-bg: linear-gradient(135deg, hsl(var(--color-background)), hsl(var(--color-muted)));
+  --card-team-bg: linear-gradient(135deg, hsl(var(--color-background)), hsl(var(--color-primary) / 0.05));
+  --card-news-bg: hsl(var(--color-background));
+  --card-stats-bg: linear-gradient(135deg, hsl(var(--color-primary) / 0.1), hsl(var(--color-secondary) / 0.1));
+
+  /* Card Image Aspect Ratios */
+  --card-image-aspect-square: 1;
+  --card-image-aspect-video: 16/9;
+  --card-image-aspect-portrait: 3/4;
+
+  /* Card Loading States */
+  --card-loading-shimmer: linear-gradient(90deg, hsl(var(--color-muted)) 25%, hsl(var(--color-primary) / 0.1) 50%, hsl(var(--color-muted)) 75%);
+  --card-loading-duration: 2s;
+}
+
+/* Buttons */
+:root {
+  --btn-height-sm: 36px;
+  --btn-height-md: 44px;
+  --btn-height-lg: 52px;
+  --btn-height-xl: 60px;
+  --btn-padding-x: 2rem;
+  --btn-border-radius: 0.75rem;
+  --btn-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Form Elements */
+:root {
+  --input-height: 44px;
+  --input-padding: 0.75rem;
+  --input-border-radius: 0.375rem;
+  --input-focus-ring: 0 0 0 3px hsl(var(--color-primary) / 0.1);
+}
+
+/* ===============================================
+   🎭 ANIMATION KEYFRAMES
+   =============================================== */
+
+/* Loading Spinner */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Bounce Animation */
+@keyframes bounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Fade In Animation */
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide In Animation */
+@keyframes slide-in-from-right {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Shimmer Effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ===============================================
+   📱 RESPONSIVE UTILITIES
+   =============================================== */
+
+/* Mobile-First Responsive Classes */
+:root {
+  --mobile-only: block;
+  --tablet-only: none;
+  --desktop-only: none;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --mobile-only: none;
+    --tablet-only: block;
+    --mobile-tablet: block;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --tablet-only: none;
+    --desktop-only: block;
+    --tablet-desktop: block;
+  }
+}
+
+/* ===============================================
+   ♿ ACCESSIBILITY UTILITIES
+   =============================================== */
+
+/* Screen Reader Only */
+:root {
+  --sr-only: position: absolute;
+  --sr-only-width: 1px;
+  --sr-only-height: 1px;
+  --sr-only-padding: 0;
+  --sr-only-margin: -1px;
+  --sr-only-overflow: hidden;
+  --sr-only-clip: rect(0, 0, 0, 0);
+  --sr-only-white-space: nowrap;
+  --sr-only-border: 0;
+}
+
+/* Focus Visible */
+:root {
+  --focus-visible: outline: var(--focus-ring-width) var(--focus-ring-style) var(--focus-ring-color);
+  --focus-visible-offset: var(--focus-ring-offset);
+  --focus-visible-radius: var(--focus-ring-radius);
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-fast: 0.01ms;
+    --transition-normal: 0.01ms;
+    --transition-slow: 0.01ms;
+    --animation-fast: 0.01ms;
+    --animation-normal: 0.01ms;
+    --animation-slow: 0.01ms;
+    --animation-slower: 0.01ms;
+  }
+}
+
+/* High Contrast */
+@media (prefers-contrast: high) {
+  :root {
+    --color-border: 0 0% 0%;  /* High contrast borders */
+    --focus-ring-width: 4px;  /* Thicker focus rings */
+  }
+}

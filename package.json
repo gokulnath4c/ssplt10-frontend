@@ -1,0 +1,39 @@
+{
+  "name": "sspl-monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "workspaces": [
+    "httpdocs",
+    "backend/backend"
+  ],
+  "scripts": {
+    "dev": "npm run --workspace=httpdocs dev",
+    "dev:backend": "npm run --workspace=backend/backend dev",
+    "dev:full": "concurrently \"npm run dev:backend\" \"npm run dev\"",
+    "build": "npm run --workspace=httpdocs build",
+    "build:dev": "npm run --workspace=httpdocs build:dev",
+    "build:preview": "npm run --workspace=httpdocs build:preview",
+    "build:production": "npm run --workspace=httpdocs build:production",
+    "start:backend": "npm run --workspace=backend/backend start",
+    "start:backend:dev": "npm run --workspace=backend/backend dev",
+    "start:backend:preview": "npm run --workspace=backend/backend preview",
+    "lint": "npm run --workspace=httpdocs lint",
+    "lint:fix": "npm run --workspace=httpdocs lint:fix",
+    "type-check": "npm run --workspace=httpdocs type-check",
+    "preview": "npm run --workspace=httpdocs preview",
+    "install:all": "npm install && npm run --workspace=httpdocs install && npm run --workspace=backend/backend install",
+    "prepare": "npx husky",
+    "pre-commit": "lint-staged",
+    "test": "echo 'No tests specified'"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "husky": "^9.1.7"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "node-fetch": "^3.3.2"
+  }
+}

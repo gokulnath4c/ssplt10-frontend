@@ -1,0 +1,25 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 62.72.43.74 >> ~/.ssh/known_hosts
+
+      - name: Deploy to server
+        run: |
+          ssh root@62.72.43.74 "cd /var/www/vhosts/ssplt10.cloud/httpdocs && git pull && npm install && npm run build"

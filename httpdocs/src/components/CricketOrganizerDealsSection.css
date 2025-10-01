@@ -1,0 +1,54 @@
+/* CricketOrganizerDealsSection.css */
+
+.limited-time-special {
+  background: linear-gradient(90deg, #FFD700 0%, #FFA500 50%, #32CD32 100%);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8), 0 0 10px #FFD700, 0 0 20px #FFD700;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.2);
+  border: 2px solid #FFD700;
+}
+
+.zap-icon {
+  filter: drop-shadow(0 0 5px #000000);
+}
+
+.special-text {
+  color: #000000;
+}
+
+.download-button {
+  color: #006400;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  box-shadow: 0 0 20px rgba(0, 100, 0, 0.3), 0 0 40px rgba(0, 100, 0, 0.2), inset 0 0 20px rgba(255, 255, 255, 0.1);
+  border: 2px solid #32CD32;
+}
+
+.download-icon {
+  color: #006400;
+  filter: drop-shadow(0 0 3px rgba(0,0,0,0.3));
+}
+
+.download-text {
+  color: #006400;
+}
+
+/* Mobile-specific fixes for download button */
+@media (max-width: 640px) {
+  .download-button {
+    min-height: 48px;
+    padding: 12px 16px;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  .download-text {
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .download-icon {
+    width: 16px;
+    height: 16px;
+  }
+}

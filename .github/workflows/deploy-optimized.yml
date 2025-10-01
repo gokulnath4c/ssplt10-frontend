@@ -1,0 +1,213 @@
+name: Deploy Optimized
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'httpdocs/**'
+      - '.github/workflows/deploy-optimized.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'httpdocs/**'
+      - '.github/workflows/deploy-optimized.yml'
+
+env:
+  NODE_VERSION: '18'
+  WORKING_DIR: 'httpdocs'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: ${{ env.WORKING_DIR }}/package-lock.json
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.WORKING_DIR }}/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles(format('{0}/package-lock.json', env.WORKING_DIR)) }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: |
+          cd ${{ env.WORKING_DIR }}
+          npm ci
+
+      - name: Run linting
+        run: |
+          cd ${{ env.WORKING_DIR }}
+          npm run lint
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: ${{ env.WORKING_DIR }}/package-lock.json
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.WORKING_DIR }}/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles(format('{0}/package-lock.json', env.WORKING_DIR)) }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: |
+          cd ${{ env.WORKING_DIR }}
+          npm ci
+
+      - name: Run tests
+        run: |
+          cd ${{ env.WORKING_DIR }}
+          npm run test:ci
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    outputs:
+      build-mode: ${{ steps.set-build-mode.outputs.build-mode }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: ${{ env.WORKING_DIR }}/package-lock.json
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.WORKING_DIR }}/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles(format('{0}/package-lock.json', env.WORKING_DIR)) }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Cache dist
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.WORKING_DIR }}/dist
+          key: ${{ runner.os }}-dist-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-dist-
+
+      - name: Install dependencies
+        run: |
+          cd ${{ env.WORKING_DIR }}
+          npm ci
+
+      - name: Determine build mode
+        id: set-build-mode
+        run: |
+          cd ${{ env.WORKING_DIR }}
+          # Check if only documentation or config files changed
+          if git diff --name-only HEAD~1 | grep -E '\.(md|json|yml|yaml|txt)$' | grep -v package.json; then
+            echo "build-mode=fast" >> $GITHUB_OUTPUT
+          else
+            echo "build-mode=production" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build application
+        run: |
+          cd ${{ env.WORKING_DIR }}
+          if [ "${{ steps.set-build-mode.outputs.build-mode }}" = "fast" ]; then
+            npm run build:fast
+          else
+            npm run build:production
+          fi
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-files
+          path: ${{ env.WORKING_DIR }}/dist/
+          retention-days: 1
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-files
+          path: dist/
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 62.72.43.74 >> ~/.ssh/known_hosts
+
+      - name: Backup current deployment
+        run: |
+          ssh root@62.72.43.74 "cd /var/www/vhosts/ssplt10.cloud && cp -r httpdocs httpdocs.backup.$(date +%Y%m%d_%H%M%S)"
+
+      - name: Deploy to server
+        id: deploy
+        run: |
+          # Copy build files to server
+          scp -r dist/* root@62.72.43.74:/var/www/vhosts/ssplt10.cloud/httpdocs/
+
+          # Verify deployment
+          ssh root@62.72.43.74 "cd /var/www/vhosts/ssplt10.cloud/httpdocs && ls -la"
+
+      - name: Health check
+        run: |
+          # Wait for deployment to be ready
+          sleep 10
+          # Simple health check - you might want to add a proper endpoint check
+          curl -f https://ssplt10.cloud/ || exit 1
+
+      - name: Notify success
+        if: success()
+        run: |
+          echo "Deployment successful!"
+          # Add notification logic here (Slack, Discord, etc.)
+
+      - name: Rollback on failure
+        if: failure()
+        run: |
+          echo "Deployment failed, initiating rollback..."
+          ssh root@62.72.43.74 "cd /var/www/vhosts/ssplt10.cloud && ls -t httpdocs.backup.* | head -1 | xargs -I {} cp -r {} httpdocs"
+          # Add notification for rollback
+          echo "Rollback completed!"
+
+  cleanup:
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: always()
+    steps:
+      - name: Clean up old backups
+        run: |
+          ssh root@62.72.43.74 "cd /var/www/vhosts/ssplt10.cloud && ls -t httpdocs.backup.* | tail -n +6 | xargs -r rm -rf"

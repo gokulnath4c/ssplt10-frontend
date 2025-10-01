@@ -1,0 +1,28 @@
+{
+  "name": "sspl-backend",
+  "version": "1.0.0",
+  "description": "Southern Street Premier League Backend API",
+  "main": "src/app.js",
+  "type": "module",
+  "scripts": {
+    "start": "NODE_ENV=production node src/app.js",
+    "dev": "NODE_ENV=development node src/app.js",
+    "preview": "NODE_ENV=preview node src/app.js",
+    "test": "echo 'No tests specified'"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
+    "helmet": "^7.1.0",
+    "pg": "^8.16.3",
+    "razorpay": "^2.9.6",
+    "@supabase/supabase-js": "^2.56.1"
+  },
+  "keywords": ["sspl", "backend", "api", "express"],
+  "author": "SSPL Team",
+  "license": "ISC"
+}

@@ -1,0 +1,102 @@
+{
+  "cdn": {
+    "provider": "cloudflare",
+    "enabled": true,
+    "zones": [
+      {
+        "name": "www.ssplt10.cloud",
+        "id": "your_zone_id_here",
+        "plan": "free",
+        "status": "active"
+      }
+    ]
+  },
+  "caching": {
+    "static_assets": {
+      "ttl": 31536000,
+      "cache_control": "public, immutable",
+      "brotli": true,
+      "gzip": true
+    },
+    "images": {
+      "ttl": 15552000,
+      "formats": ["webp", "avif"],
+      "quality": 85,
+      "responsive": true
+    },
+    "fonts": {
+      "ttl": 31536000,
+      "preload": true,
+      "display": "swap"
+    },
+    "api_responses": {
+      "ttl": 300,
+      "stale_while_revalidate": 3600
+    }
+  },
+  "optimization": {
+    "minify": {
+      "html": true,
+      "css": true,
+      "js": true
+    },
+    "image_optimization": {
+      "enabled": true,
+      "quality": 85,
+      "formats": ["webp", "avif"],
+      "sizes": [320, 640, 768, 1024, 1280, 1920]
+    },
+    "bundle_splitting": {
+      "enabled": true,
+      "chunks": {
+        "vendor": ["react", "react-dom"],
+        "ui": ["@radix-ui/*"],
+        "charts": ["recharts"],
+        "payment": ["razorpay"]
+      }
+    }
+  },
+  "security": {
+    "headers": {
+      "strict_transport_security": "max-age=31536000; includeSubDomains",
+      "x_content_type_options": "nosniff",
+      "x_frame_options": "DENY",
+      "x_xss_protection": "1; mode=block",
+      "referrer_policy": "strict-origin-when-cross-origin",
+      "permissions_policy": "geolocation=(), microphone=(), camera=()"
+    },
+    "cors": {
+      "origins": ["https://www.ssplt10.cloud"],
+      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      "headers": ["Content-Type", "Authorization"]
+    }
+  },
+  "monitoring": {
+    "real_user_monitoring": true,
+    "performance_monitoring": true,
+    "error_tracking": true,
+    "analytics": {
+      "google_analytics": "G-XXXXXXXXXX",
+      "custom_events": [
+        "page_view",
+        "user_interaction",
+        "payment_initiated",
+        "payment_completed"
+      ]
+    }
+  },
+  "deployment": {
+    "automated": true,
+    "rollback": {
+      "enabled": true,
+      "versions_to_keep": 5,
+      "auto_rollback_on_failure": true
+    },
+    "health_checks": {
+      "enabled": true,
+      "endpoints": ["/health", "/"],
+      "interval": 60,
+      "timeout": 30
+    }
+  }
+}

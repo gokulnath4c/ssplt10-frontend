@@ -1,0 +1,331 @@
+/* Sporty Card Styles - Enhanced Design System */
+
+/* Base Card Enhancements */
+@layer components {
+  /* Card Variants */
+  .card-stats {
+    @apply bg-gradient-to-br from-sport-orange/5 to-sport-teal/5 border-sport-orange/20;
+    background-image:
+      radial-gradient(circle at 20% 80%, rgba(255, 102, 0, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(0, 180, 180, 0.05) 0%, transparent 50%);
+  }
+
+  .card-stats:hover {
+    @apply border-sport-orange/40 shadow-card-float;
+    background-image:
+      radial-gradient(circle at 20% 80%, rgba(255, 102, 0, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(0, 180, 180, 0.1) 0%, transparent 50%);
+  }
+
+  .card-feature {
+    @apply bg-white border-sport-orange/15 shadow-sport;
+    position: relative;
+  }
+
+  .card-feature::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, hsl(var(--sport-orange)), hsl(var(--sport-teal)));
+    border-radius: 12px 12px 0 0;
+  }
+
+  .card-feature:hover {
+    @apply border-sport-orange/30 shadow-card-float;
+    transform: translateY(-8px);
+  }
+
+  .card-info {
+    @apply bg-sport-light border-sport-orange/10;
+  }
+
+  .card-info:hover {
+    @apply border-sport-orange/25 shadow-card-float;
+    background: linear-gradient(135deg, hsl(var(--sport-light)), hsl(var(--sport-mint)));
+  }
+
+  /* Card Grid Layouts */
+  .card-grid-responsive {
+    display: grid;
+    gap: clamp(1rem, 3vw, 1.5rem);
+  }
+
+  .card-grid-responsive.grid-1 {
+    grid-template-columns: 1fr;
+  }
+
+  .card-grid-responsive.grid-2 {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .card-grid-responsive.grid-3 {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .card-grid-responsive.grid-4 {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  .card-grid-responsive.grid-stats {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  /* Mobile-first responsive adjustments */
+  @media (max-width: 640px) {
+    .card-grid-responsive.grid-stats {
+      grid-template-columns: 1fr;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .card-grid-responsive.grid-3,
+    .card-grid-responsive.grid-4 {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (min-width: 640px) and (max-width: 768px) {
+    .card-grid-responsive.grid-stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card-grid-responsive.grid-3 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .card-grid-responsive.grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .card-grid-responsive.grid-4 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .card-grid-responsive.grid-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  /* Enhanced Card Headers */
+  .card-header-sport {
+    @apply relative pb-4;
+  }
+
+  .card-header-sport::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, hsl(var(--sport-orange)), transparent, hsl(var(--sport-teal)));
+    border-radius: 1px;
+  }
+
+  /* Card Content Enhancements */
+  .card-content-sport {
+    @apply relative z-10;
+  }
+
+  /* Card Footer Enhancements */
+  .card-footer-sport {
+    @apply relative pt-4 mt-4;
+    border-top: 1px solid hsl(var(--sport-orange) / 0.1);
+  }
+
+  /* Hover Accent Stripes */
+  .card-hover-accent {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-hover-accent::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 102, 0, 0.1),
+      rgba(0, 180, 180, 0.1),
+      transparent
+    );
+    transition: left 0.5s ease;
+    z-index: 1;
+  }
+
+  .card-hover-accent:hover::before {
+    left: 100%;
+  }
+
+  .card-hover-accent > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Loading States for Cards */
+  .card-loading {
+    @apply animate-pulse;
+  }
+
+  .card-loading .card-content {
+    background: linear-gradient(90deg,
+      hsl(var(--sport-light)) 25%,
+      hsl(var(--sport-mint)) 50%,
+      hsl(var(--sport-light)) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  /* Card Animation Classes */
+  .card-enter {
+    animation: cardEnter 0.6s ease-out forwards;
+  }
+
+  .card-hover-lift {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+
+  .card-hover-lift:hover {
+    transform: translateZ(0) translateY(-8px);
+  }
+
+  /* Enhanced Focus States */
+  .card-focusable:focus-visible {
+    outline: 3px solid hsl(var(--sport-orange));
+    outline-offset: 2px;
+    border-radius: 14px;
+  }
+
+  /* Card Size Variants */
+  .card-sm {
+    @apply p-4;
+  }
+
+  .card-md {
+    @apply p-6;
+  }
+
+  .card-lg {
+    @apply p-8;
+  }
+
+  .card-xl {
+    @apply p-10;
+  }
+}
+
+/* Keyframes for Card Animations */
+@keyframes cardEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Enhanced Card Shadows */
+@layer utilities {
+  .shadow-sport {
+    box-shadow: 0 4px 20px rgba(255, 102, 0, 0.3), 0 2px 10px hsla(var(--sport-orange), 0.2);
+  }
+
+  .shadow-card-sport {
+    box-shadow:
+      0 4px 20px rgba(255, 102, 0, 0.12),
+      0 2px 8px rgba(0, 180, 180, 0.08),
+      0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+
+  .shadow-card-hover {
+    box-shadow:
+      0 12px 40px rgba(255, 102, 0, 0.2),
+      0 6px 20px rgba(0, 180, 180, 0.15),
+      0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .shadow-card-float {
+    box-shadow:
+      0 20px 60px rgba(255, 102, 0, 0.15),
+      0 8px 32px rgba(0, 180, 180, 0.1),
+      0 4px 16px rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* Responsive Card Spacing */
+@layer utilities {
+  .card-spacing-responsive {
+    padding: clamp(1rem, 4vw, 2rem);
+  }
+
+  .card-gap-responsive {
+    gap: clamp(0.75rem, 3vw, 1.5rem);
+  }
+}
+
+/* High Contrast Support */
+@media (prefers-contrast: high) {
+  .card-stats,
+  .card-feature,
+  .card-info {
+    border-width: 2px;
+  }
+
+  .card-hover-accent::before {
+    display: none;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .card-hover-accent::before,
+  .card-enter,
+  .card-loading .card-content {
+    animation: none;
+    transition: none;
+  }
+
+  .card-hover-lift:hover {
+    transform: none;
+  }
+}
+
+/* Mobile Touch Enhancements */
+@media (max-width: 768px) {
+.card-touch {
+  -webkit-tap-highlight-color: rgba(255, 102, 0, 0.2);
+}
+
+.card-touch:active {
+  transform: scale(0.98);
+}
+
+.card-hover-accent:active {
+  background-color: rgba(255, 102, 0, 0.05);
+}
+}

@@ -1,0 +1,97 @@
+name = "sspl-website"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[env.production]
+# Production environment configuration
+routes = [
+  { pattern = "www.ssplt10.cloud/*", zone_name = "ssplt10.cloud" }
+]
+
+# Build configuration
+[build]
+command = "npm run build"
+cwd = "httpdocs"
+
+# Pages configuration
+[pages_build_output_dir]
+# Directory where Vite builds the static files
+dir = "httpdocs/dist"
+
+# Environment variables
+[vars]
+NODE_ENV = "production"
+VITE_APP_ENV = "production"
+
+# KV namespaces for caching
+[[kv_namespaces]]
+binding = "CACHE"
+id = "your_cache_namespace_id"
+preview_id = "your_preview_cache_namespace_id"
+
+# Durable Objects for session management
+[[durable_objects.bindings]]
+name = "SESSIONS"
+class_name = "SessionManager"
+
+# Rate limiting
+[rate_limiting]
+# Rate limiting rules can be configured here
+
+# Custom domains
+[[pages_build_config]]
+# Custom build configuration for Pages
+
+# Headers for security and performance
+[[headers]]
+# Security headers
+for = "/*"
+[headers.values]
+X-Frame-Options = "DENY"
+X-Content-Type-Options = "nosniff"
+X-XSS-Protection = "1; mode=block"
+Referrer-Policy = "strict-origin-when-cross-origin"
+Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# Cache headers for static assets
+[[headers]]
+for = "/assets/*"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+CDN-Cache-Control = "max-age=31536000"
+
+# Cache headers for images
+[[headers]]
+for = "/*.(jpg|jpeg|png|gif|webp|avif|svg)"
+[headers.values]
+Cache-Control = "public, max-age=15552000"
+CDN-Cache-Control = "max-age=15552000"
+
+# API response caching
+[[headers]]
+for = "/api/*"
+[headers.values]
+Cache-Control = "public, max-age=300, stale-while-revalidate=3600"
+
+# Compression
+[miniflare]
+# Enable compression
+enable_compression = true
+
+# Image optimization (if using Cloudflare Images)
+# [[images]]
+# This would be configured if using Cloudflare Images service
+
+# Analytics and monitoring
+[analytics_engine_datasets]
+# Analytics configuration
+dataset = "website-analytics"
+
+# Web Analytics
+[web_analytics]
+# Web Analytics token
+token = "your_web_analytics_token"
+
+# Sentry integration (if needed)
+# [build.upload]
+# format = "service-worker"
