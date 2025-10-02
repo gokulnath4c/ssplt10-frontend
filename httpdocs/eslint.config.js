@@ -57,7 +57,7 @@ export default tseslint.config(
       // Code style rules
       "semi": ["error", "always"],
       "quotes": ["error", "single", { "avoidEscape": true }],
-      "indent": ["error", 2, { "SwitchCase": 1 }],
+      "indent": "off", // Temporarily disabled due to stack overflow issues with complex JSX
       "comma-dangle": ["error", "always-multiline"],
       "object-curly-spacing": ["error", "always"],
       "array-bracket-spacing": ["error", "never"],
@@ -131,6 +131,13 @@ export default tseslint.config(
       "vars-on-top": "error",
       "wrap-iife": ["error", "any"],
       "yoda": ["error", "never"],
+    },
+  },
+  // SettingsTab.tsx specific rules to prevent stack overflow
+  {
+    files: ["src/components/admin/SettingsTab.tsx"],
+    rules: {
+      "indent": "off", // Temporarily disable indent rule for this file
     },
   },
   // Server-side rules

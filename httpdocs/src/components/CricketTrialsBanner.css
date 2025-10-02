@@ -1,0 +1,408 @@
+/* ================================================
+   CRICKET TRIALS BANNER COMPONENT STYLES
+   ================================================ */
+
+/* Particle System Canvas Styles */
+.cricket-trials-canvas {
+  mix-blend-mode: multiply;
+}
+
+/* Floating Cricket Elements Container */
+.floating-cricket-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Individual Floating Cricket Elements */
+.floating-cricket-element {
+  position: absolute;
+  text-align: center;
+  font-size: 2rem;
+  opacity: 0.2;
+  filter: drop-shadow(0 0 10px currentColor);
+  animation: float-up 8s ease-in-out infinite;
+}
+
+.floating-cricket-element:nth-child(2) {
+  animation-delay: 1s;
+  animation-duration: 8s;
+}
+
+.floating-cricket-element:nth-child(3) {
+  animation-delay: 2s;
+  animation-duration: 7s;
+}
+
+.floating-cricket-element:nth-child(4) {
+  animation-delay: 3s;
+  animation-duration: 9s;
+}
+
+/* Banner Container with Parallax Effect */
+.banner-container-parallax {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background: linear-gradient(135deg, rgb(239 246 255), rgb(255 255 255), rgb(240 253 244));
+  border: 1px solid rgb(59 130 246 / 0.2);
+  box-shadow:
+    0 25px 50px -12px rgb(0 0 0 / 0.25),
+    0 0 0 1px rgb(255 255 255 / 0.05);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  animation: modal-appear 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  transition: transform 0.1s ease-out;
+}
+
+/* Parallax Transform Styles */
+.banner-parallax {
+  transform-style: preserve-3d;
+  transform: perspective(1000px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg));
+}
+
+/* Cricket Ball Image Styles */
+.cricket-ball-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8rem;
+  height: 8rem;
+  animation: bounce-spectacular 3s ease-in-out infinite;
+  opacity: 0.7;
+  filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.5));
+}
+
+.cricket-ball-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  animation: slow-spin 8s linear infinite;
+}
+
+/* Title Gradient Text Styles */
+.title-gradient-text {
+  background: linear-gradient(135deg, #1f2937, #3b82f6, #10b981);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease-in-out infinite;
+}
+
+/* Background Decoration Elements */
+.background-decoration {
+  position: absolute;
+  inset: 0;
+  opacity: 0.1;
+}
+
+.background-decoration-element {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(32px);
+  animation: color-shift 8s ease-in-out infinite;
+}
+
+.background-decoration-element:nth-child(2) {
+  animation-delay: 2s;
+}
+
+.background-decoration-element:nth-child(3) {
+  animation-delay: 4s;
+}
+
+/* Dynamic Gradient Overlay */
+.gradient-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgb(37 99 235 / 0.1), transparent, rgb(34 197 94 / 0.1));
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  animation: gradient-shift 6s ease-in-out infinite;
+}
+
+/* Animated Background Elements */
+.animated-bg-elements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bg-element {
+  position: absolute;
+  border-radius: 50%;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.bg-element:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.bg-element:nth-child(3) {
+  animation-delay: 1s;
+}
+
+/* Close Button Styles */
+.close-button-enhanced {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 50;
+  padding: 0.75rem;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.9);
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: float-gentle 4s ease-in-out infinite;
+}
+
+.close-button-enhanced:hover {
+  background: rgb(255 255 255);
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+  transform: scale(1.1);
+}
+
+.close-button-enhanced:focus {
+  outline: none;
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1),
+    0 0 0 2px rgb(59 130 246),
+    0 0 0 4px rgb(59 130 246 / 0.5);
+}
+
+.close-button-enhanced svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: rgb(75 85 99);
+  transition: color 0.2s ease;
+}
+
+.close-button-enhanced:hover svg {
+  color: rgb(31 41 55);
+}
+
+/* Content Container */
+.content-container {
+  position: relative;
+  padding: 1.5rem 2rem 2.5rem;
+  text-align: center;
+  z-index: 10;
+}
+
+@media (min-width: 640px) {
+  .content-container {
+    padding: 2rem 3rem 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .content-container {
+    padding: 2.5rem 4rem 4rem;
+  }
+}
+
+/* Badge Styles */
+.announcement-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, rgb(219 234 254), rgb(216 180 254));
+  color: rgb(30 64 175);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
+  animation: badge-glow 2.5s ease-in-out infinite;
+}
+
+.announcement-badge svg {
+  width: 1rem;
+  height: 1rem;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* CTA Button Styles */
+.cta-button {
+  position: relative;
+  background: linear-gradient(135deg, rgb(37 99 235), rgb(147 51 234), rgb(34 197 94));
+  color: white;
+  font-weight: 700;
+  padding: 1.25rem 2.5rem;
+  border-radius: 9999px;
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1),
+    0 0 0 4px rgb(147 51 234 / 0.2);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  cursor: pointer;
+  min-width: 200px;
+  text-align: center;
+  overflow: hidden;
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.cta-button:hover {
+  box-shadow:
+    0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1),
+    0 0 0 4px rgb(147 51 234 / 0.3);
+  transform: scale(1.1);
+}
+
+.cta-button:active {
+  transform: scale(0.95);
+}
+
+.cta-button .button-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  font-size: 1.125rem;
+}
+
+.cta-button .button-particles {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cta-button:hover .button-particles {
+  opacity: 1;
+}
+
+.cta-button .particle {
+  position: absolute;
+  border-radius: 50%;
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.cta-button .particle:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.cta-button .particle:nth-child(3) {
+  animation-delay: 1s;
+}
+
+.cta-button .hover-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, rgb(34 197 94), rgb(147 51 234), rgb(37 99 235));
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: gradient-flow 3s ease-in-out infinite;
+}
+
+.cta-button:hover .hover-overlay {
+  opacity: 1;
+}
+
+.cta-button .ripple-effect {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: rgb(255 255 255 / 0.2);
+  opacity: 0;
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.cta-button:active .ripple-effect {
+  opacity: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .cta-button {
+    padding: 1rem 2rem;
+    min-width: 160px;
+  }
+
+  .cta-button .button-content {
+    font-size: 1rem;
+  }
+
+  .cta-button .button-content span:first-child {
+    display: none;
+  }
+
+  .cta-button .button-content span:nth-child(2) {
+    display: inline;
+  }
+
+  .cricket-ball-image {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  .floating-cricket-element {
+    font-size: 1.5rem;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .cricket-trials-canvas,
+  .floating-cricket-element,
+  .banner-container-parallax,
+  .cricket-ball-image,
+  .title-gradient-text,
+  .background-decoration-element,
+  .gradient-overlay,
+  .bg-element,
+  .close-button-enhanced,
+  .announcement-badge,
+  .cta-button {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .cta-button:hover {
+    transform: none !important;
+  }
+
+  .close-button-enhanced:hover {
+    transform: none !important;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .banner-container-parallax {
+    border: 2px solid rgb(59 130 246);
+  }
+
+  .cta-button {
+    border: 2px solid rgb(255 255 255);
+  }
+
+  .close-button-enhanced {
+    border: 2px solid rgb(75 85 99);
+  }
+}

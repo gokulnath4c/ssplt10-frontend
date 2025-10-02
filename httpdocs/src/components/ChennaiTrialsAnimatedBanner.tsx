@@ -154,10 +154,10 @@ const AdvancedParticleSystem: React.FC<{ isVisible: boolean }> = ({ isVisible })
 // Floating Geometric Elements
 const FloatingGeometricElements: React.FC<{ isVisible: boolean }> = ({ isVisible }) => {
   const elements = [
-    { shape: 'polygon', points: '25,5 45,5 40,25 10,25', delay: '0s', duration: '8s', color: 'rgba(59, 130, 246, 0.2)' },
-    { shape: 'circle', cx: '50', cy: '50', r: '15', delay: '1s', duration: '10s', color: 'rgba(16, 185, 129, 0.2)' },
-    { shape: 'polygon', points: '30,10 50,10 45,30 25,30', delay: '2s', duration: '12s', color: 'rgba(245, 158, 11, 0.2)' },
-    { shape: 'polygon', points: '20,15 40,15 35,35 15,35', delay: '3s', duration: '9s', color: 'rgba(239, 68, 68, 0.2)' },
+    { shape: 'polygon', points: '25,5 45,5 40,25 10,25', delayClass: 'floating-geometric-delay-0', color: 'rgba(59, 130, 246, 0.2)' },
+    { shape: 'circle', cx: '50', cy: '50', r: '15', delayClass: 'floating-geometric-delay-1', color: 'rgba(16, 185, 129, 0.2)' },
+    { shape: 'polygon', points: '30,10 50,10 45,30 25,30', delayClass: 'floating-geometric-delay-2', color: 'rgba(245, 158, 11, 0.2)' },
+    { shape: 'polygon', points: '20,15 40,15 35,35 15,35', delayClass: 'floating-geometric-delay-3', color: 'rgba(239, 68, 68, 0.2)' },
   ];
 
   return (
@@ -165,11 +165,7 @@ const FloatingGeometricElements: React.FC<{ isVisible: boolean }> = ({ isVisible
       {elements.map((element, index) => (
         <div
           key={index}
-          className={`absolute animate-float-geometric floating-geometric-element`}
-          style={{
-            animationDelay: element.delay,
-            animationDuration: element.duration,
-          }}
+          className={`absolute animate-float-geometric floating-geometric-element ${element.delayClass}`}
         >
           <svg width="60" height="60" className="animate-spin-slow">
             {element.shape === 'polygon' ? (
@@ -256,10 +252,13 @@ const ChennaiTrialsAnimatedBanner: React.FC<ChennaiTrialsAnimatedBannerProps> = 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!bannerRef.current) return;
     const rect = bannerRef.current.getBoundingClientRect();
-    setMousePosition({
-      x: (e.clientX - rect.left) / rect.width,
-      y: (e.clientY - rect.top) / rect.height,
-    });
+    const x = ((e.clientX - rect.left) / rect.width) * 3 - 1.5;
+    const y = ((e.clientY - rect.top) / rect.height) * 3 - 1.5;
+    setMousePosition({ x, y });
+
+    // Set CSS custom properties for parallax effect
+    bannerRef.current.style.setProperty('--mouse-x', `${x}`);
+    bannerRef.current.style.setProperty('--mouse-y', `${y}`);
   };
 
   useEffect(() => {
@@ -272,6 +271,12 @@ const ChennaiTrialsAnimatedBanner: React.FC<ChennaiTrialsAnimatedBannerProps> = 
     };
 
     mediaQuery.addEventListener('change', handleChange);
+
+    // Initialize CSS custom properties for parallax effect
+    if (bannerRef.current) {
+      bannerRef.current.style.setProperty('--mouse-x', '0');
+      bannerRef.current.style.setProperty('--mouse-y', '0');
+    }
 
     // Trigger animations after component mounts
     const timer = setTimeout(() => {
@@ -318,9 +323,13 @@ const ChennaiTrialsAnimatedBanner: React.FC<ChennaiTrialsAnimatedBannerProps> = 
             aria-labelledby="chennai-trials-title"
             onMouseMove={handleMouseMove}
             onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            style={{
-              transform: `perspective(1000px) rotateX(${mousePosition.y * 3 - 1.5}deg) rotateY(${mousePosition.x * 3 - 1.5}deg) scale(${isHovered ? 1.02 : 1})`,
+            onMouseLeave={() => {
+              setIsHovered(false);
+              // Reset parallax effect when mouse leaves
+              if (bannerRef.current) {
+                bannerRef.current.style.setProperty('--mouse-x', '0');
+                bannerRef.current.style.setProperty('--mouse-y', '0');
+              }
             }}
           >
             {/* Enhanced Background decoration with multi-layered gradients */}
@@ -371,10 +380,10 @@ const ChennaiTrialsAnimatedBanner: React.FC<ChennaiTrialsAnimatedBannerProps> = 
 
             {/* Enhanced Animated background elements with multi-layered glow effects */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-              <div className="banner-glow-element" />
-              <div className="banner-glow-element" style={{ animationDelay: '1s' }} />
-              <div className="banner-glow-element" style={{ animationDelay: '2s' }} />
-              <div className="banner-glow-element" style={{ animationDelay: '0.5s' }} />
+              <div className="banner-glow-element banner-glow-delay-0" />
+              <div className="banner-glow-element banner-glow-delay-1" />
+              <div className="banner-glow-element banner-glow-delay-2" />
+              <div className="banner-glow-element banner-glow-delay-3" />
             </div>
 
             {/* Spectacular floating icons */}
@@ -399,10 +408,7 @@ const ChennaiTrialsAnimatedBanner: React.FC<ChennaiTrialsAnimatedBannerProps> = 
 
                 <h2
                   id="chennai-trials-title"
-                  className={`text-4xl sm:text-5xl lg:text-7xl font-black leading-tight transition-all duration-700 delay-100 chennai-trials-title ${isVisible ? textAnimationClass : 'opacity-0'}`}
-                  style={{
-                    animation: isVisible ? 'gradientShift 4s ease-in-out infinite' : 'none',
-                  }}
+                  className={`text-4xl sm:text-5xl lg:text-7xl font-black leading-tight transition-all duration-700 delay-100 chennai-trials-title ${isVisible ? `chennai-trials-title-animate ${textAnimationClass}` : 'opacity-0'}`}
                 >
                   {announcement.title}
                 </h2>
@@ -454,10 +460,10 @@ const ChennaiTrialsAnimatedBanner: React.FC<ChennaiTrialsAnimatedBannerProps> = 
                   >
                     {/* Animated background particles */}
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="absolute top-3 left-3 w-3 h-3 bg-white/40 rounded-full animate-ping" />
-                      <div className="absolute top-5 right-4 w-2 h-2 bg-white/50 rounded-full animate-ping" style={{ animationDelay: '0.5s' }} />
-                      <div className="absolute bottom-4 left-5 w-2.5 h-2.5 bg-white/30 rounded-full animate-ping" style={{ animationDelay: '1s' }} />
-                      <div className="absolute bottom-3 right-3 w-2 h-2 bg-white/60 rounded-full animate-ping" style={{ animationDelay: '1.5s' }} />
+                      <div className="absolute top-3 left-3 w-3 h-3 bg-white/40 rounded-full animate-ping cta-particle-delay-0" />
+                      <div className="absolute top-5 right-4 w-2 h-2 bg-white/50 rounded-full animate-ping cta-particle-delay-1" />
+                      <div className="absolute bottom-4 left-5 w-2.5 h-2.5 bg-white/30 rounded-full animate-ping cta-particle-delay-2" />
+                      <div className="absolute bottom-3 right-3 w-2 h-2 bg-white/60 rounded-full animate-ping cta-particle-delay-3" />
                     </div>
 
                     {/* Button content */}

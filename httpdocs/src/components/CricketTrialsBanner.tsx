@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Calendar, MapPin, Users } from 'lucide-react';
+import './CricketTrialsBanner.css';
 
 // Types
 interface CricketTrialsAnnouncement {
@@ -125,8 +126,7 @@ const ParticleSystem: React.FC<{ isVisible: boolean }> = ({ isVisible }) => {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ mixBlendMode: 'multiply' }}
+      className="absolute inset-0 w-full h-full pointer-events-none cricket-trials-canvas"
     />
   );
 };
@@ -141,17 +141,11 @@ const FloatingCricketElements: React.FC<{ isVisible: boolean }> = ({ isVisible }
   ];
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div className="floating-cricket-container">
       {elements.map((element, index) => (
         <div
           key={index}
-          className={`absolute text-4xl opacity-20 animate-float-up`}
-          style={{
-            left: `${20 + index * 20}%`,
-            animationDelay: element.delay,
-            animationDuration: element.duration,
-            filter: 'drop-shadow(0 0 10px currentColor)',
-          }}
+          className={`floating-cricket-element ${index === 0 ? 'left-20' : index === 1 ? 'left-40' : index === 2 ? 'left-60' : 'left-80'}`}
         >
           {element.icon}
         </div>
@@ -333,20 +327,20 @@ const CricketTrialsBanner: React.FC<CricketTrialsBannerProps> = ({
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div
             ref={bannerRef}
-            className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-50 via-white to-green-50 border border-blue-200 shadow-2xl backdrop-blur-sm animate-modal-appear group"
+            className="banner-container-parallax banner-parallax relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-50 via-white to-green-50 border border-blue-200 shadow-2xl animate-modal-appear group"
             role="banner"
             aria-labelledby="trials-title"
             onMouseMove={handleMouseMove}
             style={{
-              transform: `perspective(1000px) rotateX(${mousePosition.y * 2 - 1}deg) rotateY(${mousePosition.x * 2 - 1}deg)`,
-              transition: 'transform 0.1s ease-out',
-            }}
+              '--rotate-x': `${mousePosition.y * 2 - 1}deg`,
+              '--rotate-y': `${mousePosition.x * 2 - 1}deg`,
+            } as React.CSSProperties}
           >
             {/* Enhanced Background decoration with color-shifting gradients */}
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute top-10 left-10 w-20 h-20 bg-gradient-to-br from-blue-400 to-purple-400 rounded-full blur-xl animate-color-shift" />
-              <div className="absolute bottom-10 right-10 w-32 h-32 bg-gradient-to-br from-green-400 to-teal-400 rounded-full blur-xl animate-color-shift-delayed" />
-              <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-gradient-to-br from-orange-400 to-red-400 rounded-full blur-xl animate-color-shift-slow" />
+            <div className="background-decoration">
+              <div className="background-decoration-element absolute top-10 left-10 w-20 h-20 bg-gradient-to-br from-blue-400 to-purple-400 rounded-full blur-xl" />
+              <div className="background-decoration-element absolute bottom-10 right-10 w-32 h-32 bg-gradient-to-br from-green-400 to-teal-400 rounded-full blur-xl" />
+              <div className="background-decoration-element absolute top-1/2 left-1/4 w-16 h-16 bg-gradient-to-br from-orange-400 to-red-400 rounded-full blur-xl" />
             </div>
 
             {/* Particle System */}
@@ -362,11 +356,11 @@ const CricketTrialsBanner: React.FC<CricketTrialsBannerProps> = ({
             {showCloseButton && (
               <button
                 onClick={handleClose}
-                className="absolute top-6 right-6 z-50 p-3 rounded-full bg-white/90 hover:bg-white shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 group/close hover:scale-110 animate-float-gentle"
+                className="close-button-enhanced"
                 aria-label="Close banner"
               >
                 <svg
-                  className="w-5 h-5 text-gray-600 hover:text-gray-800 transition-colors duration-200"
+                  className="w-5 h-5"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -382,48 +376,37 @@ const CricketTrialsBanner: React.FC<CricketTrialsBannerProps> = ({
             )}
 
             {/* Dynamic gradient overlay with color-shifting */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-transparent to-green-600/10 backdrop-blur-sm animate-gradient-shift"></div>
+            <div className="gradient-overlay"></div>
 
             {/* Enhanced Animated background elements with glow effects */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-              <div className="absolute top-10 left-10 w-4 h-4 bg-blue-400 rounded-full opacity-30 animate-pulse-glow shadow-lg shadow-blue-400/50"></div>
-              <div className="absolute top-20 right-20 w-6 h-6 bg-green-400 rounded-full opacity-25 animate-pulse-glow-delayed shadow-lg shadow-green-400/50" style={{ animationDelay: '1s' }}></div>
-              <div className="absolute bottom-10 left-20 w-3 h-3 bg-purple-500 rounded-full opacity-35 animate-pulse-glow-slow shadow-lg shadow-purple-500/50" style={{ animationDelay: '2s' }}></div>
+            <div className="animated-bg-elements">
+              <div className="bg-element absolute top-10 left-10 w-4 h-4 bg-blue-400 rounded-full opacity-30 shadow-lg shadow-blue-400/50"></div>
+              <div className="bg-element absolute top-20 right-20 w-6 h-6 bg-green-400 rounded-full opacity-25 shadow-lg shadow-green-400/50"></div>
+              <div className="bg-element absolute bottom-10 left-20 w-3 h-3 bg-purple-500 rounded-full opacity-35 shadow-lg shadow-purple-500/50"></div>
             </div>
 
             {/* Spectacular bouncing cricket ball with enhanced effects */}
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 animate-bounce-spectacular z-0 opacity-70">
+            <div className="cricket-ball-image">
               <img
                 src="/image_3.png"
                 alt="Cricket Ball"
-                className="w-full h-full object-contain animate-slow-spin drop-shadow-2xl"
-                style={{
-                  filter: 'drop-shadow(0 0 20px rgba(239, 68, 68, 0.5))',
-                }}
+                className="w-full h-full object-contain"
               />
             </div>
 
-            <div className="relative p-6 sm:p-8 lg:p-10 text-center space-y-6 z-10">
+            <div className="content-container relative text-center space-y-6 z-10">
               {/* Enhanced Content with staggered animations */}
               <div className="space-y-4">
                 <div className={`transition-all duration-700 ${isVisible ? textAnimationClass : 'opacity-0'}`}>
-                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 text-sm font-medium mb-4 shadow-lg animate-badge-glow">
-                    <Users className="w-4 h-4 animate-pulse" />
+                  <div className="announcement-badge">
+                    <Users className="w-4 h-4" />
                     {announcement.callout}
                   </div>
                 </div>
 
                 <h2
                   id="trials-title"
-                  className={`text-3xl sm:text-4xl lg:text-6xl font-black text-gray-900 leading-tight transition-all duration-700 delay-100 ${isVisible ? textAnimationClass : 'opacity-0'}`}
-                  style={{
-                    background: 'linear-gradient(135deg, #1f2937, #3b82f6, #10b981)',
-                    backgroundClip: 'text',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundSize: '200% 200%',
-                    animation: isVisible ? 'gradientShift 3s ease-in-out infinite' : 'none',
-                  }}
+                  className={`title-gradient-text text-3xl sm:text-4xl lg:text-6xl font-black text-gray-900 leading-tight transition-all duration-700 delay-100 ${isVisible ? textAnimationClass : 'opacity-0'}`}
                 >
                   {announcement.title}
                 </h2>
@@ -453,28 +436,28 @@ const CricketTrialsBanner: React.FC<CricketTrialsBannerProps> = ({
                 >
                   <button
                     onClick={onRegister}
-                    className="group relative bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 text-white font-bold py-5 px-10 rounded-full shadow-2xl hover:shadow-purple-500/50 transition-all duration-500 focus:outline-none focus:ring-4 focus:ring-purple-300 focus:ring-opacity-50 min-w-[200px] text-center hover:scale-110 active:scale-95 animate-glow-pulse overflow-hidden"
+                    className="cta-button"
                     aria-label={`Register for ${announcement.title} at ${announcement.venue}`}
                   >
                     {/* Animated background particles */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="absolute top-2 left-2 w-2 h-2 bg-white/30 rounded-full animate-ping" />
-                      <div className="absolute top-4 right-3 w-1 h-1 bg-white/40 rounded-full animate-ping" style={{ animationDelay: '0.5s' }} />
-                      <div className="absolute bottom-3 left-4 w-1.5 h-1.5 bg-white/20 rounded-full animate-ping" style={{ animationDelay: '1s' }} />
+                    <div className="button-particles">
+                      <div className="particle absolute top-2 left-2 w-2 h-2 bg-white/30 rounded-full" />
+                      <div className="particle absolute top-4 right-3 w-1 h-1 bg-white/40 rounded-full" />
+                      <div className="particle absolute bottom-3 left-4 w-1.5 h-1.5 bg-white/20 rounded-full" />
                     </div>
 
                     {/* Button content */}
-                    <span className="relative z-10 flex items-center justify-center gap-3 text-lg">
+                    <span className="button-content">
                       <span className="hidden sm:inline">{announcement.ctaText}</span>
                       <span className="sm:hidden">Register</span>
                       <span className="animate-bounce">🏏</span>
                     </span>
 
                     {/* Enhanced hover effect overlay */}
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-r from-green-600 via-purple-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-all duration-500 animate-gradient-flow" />
+                    <div className="hover-overlay" />
 
                     {/* Ripple effect */}
-                    <div className="absolute inset-0 rounded-full bg-white/20 opacity-0 group-active:opacity-100 animate-ping" />
+                    <div className="ripple-effect" />
                   </button>
                 </div>
               </div>

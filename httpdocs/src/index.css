@@ -1801,8 +1801,8 @@ All colors MUST be HSL.
 
   /* Enhanced Glassmorphism Utilities */
   .backdrop-blur-2xl {
-    backdrop-filter: blur(40px);
     -webkit-backdrop-filter: blur(40px);
+    backdrop-filter: blur(40px);
   }
 
   .shadow-glass {
@@ -1812,8 +1812,8 @@ All colors MUST be HSL.
   /* Glassmorphism Header Styles */
   .glass-header {
     background: rgba(255, 255, 255, 0.1) !important;
-    backdrop-filter: blur(40px) !important;
     -webkit-backdrop-filter: blur(40px) !important;
+    backdrop-filter: blur(40px) !important;
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
   }
@@ -1830,8 +1830,8 @@ All colors MUST be HSL.
   /* Force glassmorphism on header */
   header[class*="bg-white/10"] {
     background: rgba(255, 255, 255, 0.1) !important;
-    backdrop-filter: blur(40px) !important;
     -webkit-backdrop-filter: blur(40px) !important;
+    backdrop-filter: blur(40px) !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
     position: relative !important;
@@ -1868,8 +1868,8 @@ All colors MUST be HSL.
 
   /* Enhanced Glassmorphism Utilities */
   .backdrop-blur-2xl {
-    backdrop-filter: blur(40px);
     -webkit-backdrop-filter: blur(40px);
+    backdrop-filter: blur(40px);
   }
 
   .shadow-glass {
@@ -1879,8 +1879,8 @@ All colors MUST be HSL.
   /* Glassmorphism Header Styles */
   .glass-header {
     background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(40px);
     -webkit-backdrop-filter: blur(40px);
+    backdrop-filter: blur(40px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
   }
@@ -1897,8 +1897,8 @@ All colors MUST be HSL.
   /* Glassmorphism Menu Styles */
   .glass-menu {
     background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(40px);
     -webkit-backdrop-filter: blur(40px);
+    backdrop-filter: blur(40px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
   }
@@ -2549,21 +2549,21 @@ body.payment-open #razorpay-checkout-frame {
   .animate-marquee-partners,
   .animate-marquee-gallery,
   .animate-marquee-gallery-reverse {
-    animation-play-state: running !important;
     will-change: transform !important;
-    transform: translateZ(0) !important;
-    backface-visibility: hidden !important;
     -webkit-transform: translateZ(0) !important;
+    transform: translateZ(0) !important;
     -webkit-backface-visibility: hidden !important;
+    backface-visibility: hidden !important;
     -webkit-animation-play-state: running !important;
     -moz-animation-play-state: running !important;
     -o-animation-play-state: running !important;
+    animation-play-state: running !important;
     /* Prevent mobile browsers from pausing animations */
     -webkit-animation-fill-mode: forwards !important;
     animation-fill-mode: forwards !important;
     /* Force continuous animation */
-    animation-iteration-count: infinite !important;
     -webkit-animation-iteration-count: infinite !important;
+    animation-iteration-count: infinite !important;
   }
 
   /* Mobile-specific marquee optimizations - simplified */

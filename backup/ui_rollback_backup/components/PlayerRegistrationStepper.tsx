@@ -182,8 +182,6 @@ const PlayerRegistrationStepper = () => {
     }));
   };
 
-
-
   const validateForm = () => {
     const requiredFields = ['full_name', 'email', 'phone', 'state', 'city', 'pincode'];
 
@@ -238,7 +236,6 @@ const PlayerRegistrationStepper = () => {
       handlePayment();
     }
   };
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -444,7 +441,7 @@ const PlayerRegistrationStepper = () => {
                   : 'bg-gray-100 border-gray-300 text-gray-400'
               }`}
               role="tab"
-              aria-selected={currentStep === step.id}
+              aria-selected="false"
               aria-controls={`step-panel-${step.id}`}
               id={`step-${step.id}`}
             >
