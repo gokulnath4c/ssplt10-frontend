@@ -1,11 +1,25 @@
+/// <reference types="vite/client" />
+
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from '../../../httpdocs/src/integrations/supabase/client';
 import PaymentSuccessCelebration from './PaymentSuccessCelebration';
 import TermsAndConditions from './TermsAndConditions';
-import { razorpayService, type RazorpayPaymentFailedError, type RazorpayPaymentSuccessResponse } from '@/integrations/razorpayService';
-import { useToast } from "@/hooks/use-toast";
+import { razorpayService, type RazorpayPaymentFailedError, type RazorpayPaymentSuccessResponse } from '../../../httpdocs/src/integrations/razorpayService';
+import { useToast } from "../../../httpdocs/src/hooks/use-toast";
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '../../../httpdocs/src/hooks/useAuth';
+
+// Extend Window interface for Razorpay
+declare global {
+  interface Window {
+    Razorpay: {
+      new (options: any): {
+        open(): void;
+        on(event: string, handler: (response: any) => void): void;
+      };
+    };
+  }
+}
 import {
   CheckCircle,
   CreditCard,
@@ -20,8 +34,8 @@ import {
   MapPin,
   Zap
 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "../../../httpdocs/src/components/ui/card";
+import { Badge } from "../../../httpdocs/src/components/ui/badge";
 
 interface PlayerDetails {
   full_name: string;
@@ -66,8 +80,8 @@ const PlayerRegistrationStepper = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const envFee = Number(import.meta.env.VITE_REGISTRATION_FEE ?? (import.meta.env.MODE === 'production' ? 10 : 10));
-  const baseAmount = (Number.isFinite(envFee) && envFee > 0 ? Math.round(envFee) : (adminSettings?.registration_fee ?? 10));
+  const envFee = Number(import.meta.env.VITE_REGISTRATION_FEE ?? (import.meta.env.MODE === 'production' ? 699 : 699));
+  const baseAmount = (Number.isFinite(envFee) && envFee > 0 ? Math.round(envFee) : (adminSettings?.registration_fee ?? 699));
   const gstPercentage = adminSettings?.gst_percentage || 18;
   const gstAmount = Math.round(baseAmount * gstPercentage / 100);
   const totalAmount = baseAmount + gstAmount;
@@ -93,16 +107,16 @@ const PlayerRegistrationStepper = () => {
 
         if (error) {
           console.error('Error fetching admin settings:', error);
-          setAdminSettings({ registration_fee: 10, gst_percentage: 18 });
+          setAdminSettings({ registration_fee: 699, gst_percentage: 18 });
         } else {
           setAdminSettings({
-            registration_fee: (data && typeof data.registration_fee === 'number') ? data.registration_fee : 10,
+            registration_fee: (data && typeof data.registration_fee === 'number') ? data.registration_fee : 699,
             gst_percentage: (data && typeof data.gst_percentage === 'number') ? data.gst_percentage : 18
           });
         }
       } catch (error) {
         console.error('Error fetching admin settings:', error);
-        setAdminSettings({ registration_fee: 10, gst_percentage: 18 });
+        setAdminSettings({ registration_fee: 699, gst_percentage: 18 });
       } finally {
         setLoadingSettings(false);
       }
@@ -418,15 +432,15 @@ const PlayerRegistrationStepper = () => {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Enhanced Step Indicator */}
-      <div className="flex items-center justify-center mb-6 sm:mb-8" role="tablist" aria-label="Registration Steps">
+    <div className="max-w-2xl mx-auto space-y-4">
+      {/* Compact Step Indicator */}
+      <div className="flex items-center justify-center mb-4" role="tablist" aria-label="Registration Steps">
         {steps.map((step, index) => (
           <React.Fragment key={step.id}>
             <div
-              className={`flex items-center justify-center w-12 h-12 rounded-full border-2 transition-all duration-300 ${
+              className={`flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-200 ${
                 currentStep >= step.id
-                  ? `bg-gradient-to-r ${step.color} border-transparent text-white shadow-lg`
+                  ? `bg-gradient-to-r ${step.color} border-transparent text-white shadow-md`
                   : 'bg-gray-100 border-gray-300 text-gray-400'
               }`}
               role="tab"
@@ -435,14 +449,14 @@ const PlayerRegistrationStepper = () => {
               id={`step-${step.id}`}
             >
               {currentStep > step.id ? (
-                <CheckCircle className="w-6 h-6" />
+                <CheckCircle className="w-4 h-4" />
               ) : (
-                <step.icon className="w-6 h-6" />
+                <step.icon className="w-4 h-4" />
               )}
             </div>
             {index < steps.length - 1 && (
               <div
-                className={`flex-1 h-1 mx-4 rounded transition-all duration-300 ${
+                className={`flex-1 h-0.5 mx-2 rounded transition-all duration-200 ${
                   currentStep > step.id ? 'bg-gradient-to-r ' + step.color : 'bg-gray-200'
                 }`}
                 aria-hidden="true"
@@ -452,19 +466,16 @@ const PlayerRegistrationStepper = () => {
         ))}
       </div>
 
-      {/* Step Labels */}
-      <div className="flex justify-between mb-6">
-        {steps.map((step) => (
-          <div
-            key={step.id}
-            className={`text-center transition-all duration-300 ${
-              currentStep === step.id ? 'text-sport-electric-blue font-semibold' : 'text-gray-500'
-            }`}
-          >
-            <div className="text-sm font-medium">{step.title}</div>
-            <div className="text-xs text-gray-400 mt-1">{step.description}</div>
+      {/* Compact Step Labels */}
+      <div className="flex justify-center mb-4">
+        <div className="text-center">
+          <div className={`text-sm font-medium transition-all duration-200 ${
+            currentStep === 1 ? 'text-sport-electric-blue' : 'text-sport-vibrant-green'
+          }`}>
+            {steps[currentStep - 1].title}
           </div>
-        ))}
+          <div className="text-xs text-gray-500 mt-0.5">{steps[currentStep - 1].description}</div>
+        </div>
       </div>
 
       {/* Enhanced Home Button */}
@@ -479,122 +490,99 @@ const PlayerRegistrationStepper = () => {
         </button>
       </div>
 
-      {/* Enhanced Trial Announcement Banner */}
-      <div className="bg-gradient-to-r from-sport-electric-blue via-sport-vibrant-green to-sport-energy-orange text-white rounded-xl p-6 mb-6 shadow-xl border-2 border-sport-bright-yellow relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-sport-electric-blue/20 via-sport-vibrant-green/20 to-sport-energy-orange/20 animate-pulse"></div>
+      {/* Compact Trial Announcement Banner */}
+      <div className="bg-gradient-to-r from-sport-electric-blue to-sport-vibrant-green text-white rounded-lg p-3 mb-4 shadow-lg border border-sport-bright-yellow/30 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-sport-electric-blue/10 to-sport-vibrant-green/10"></div>
         <div className="relative z-10 text-center">
-          <div className="flex items-center justify-center gap-3 flex-wrap mb-4">
-            <div className="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full backdrop-blur-sm">
-              <Zap className="w-5 h-5 text-sport-bright-yellow" />
-              <span className="text-sm font-bold">TRIALS UPDATE</span>
-            </div>
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <Zap className="w-4 h-4 text-sport-bright-yellow" />
+            <span className="text-sm font-bold">TRIALS UPDATE</span>
           </div>
-
-          <div className="mb-6">
-            <h3 className="text-2xl font-bold mb-3 text-sport-bright-yellow">
-              Next Schedule on Trials will be Announced soon!
-            </h3>
-            <p className="text-lg mb-2">
-              Keep Checking Our Instagram Page for Further Updates.
-            </p>
-            <p className="text-base font-semibold text-sport-bright-yellow">
-              Spot Registrations Available!
-            </p>
-          </div>
-
-          <div className="bg-white/10 p-4 rounded-lg mb-4">
-            <div className="flex items-center justify-center gap-3 flex-wrap">
-              <div className="flex items-center gap-2">
-                <Calendar className="w-5 h-5 text-sport-bright-yellow" />
-                <span className="text-sm font-medium">Next Schedule</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <MapPin className="w-5 h-5 text-sport-bright-yellow" />
-                <span className="text-sm font-medium">Follow Updates</span>
-              </div>
-            </div>
-            <p className="text-sm mt-2 text-white/90">
-              Next Schedule for the Trials will be announced soon, keep checking our Instagram Page for further updates – stay tuned for the thrill!
-            </p>
-          </div>
-
-          <div className="text-center">
-            <span className="text-xl font-bold bg-gradient-to-r from-sport-bright-yellow to-sport-energy-orange text-black px-6 py-3 rounded-xl shadow-xl border-2 border-sport-bright-yellow inline-block transform hover:scale-105 transition-transform duration-200">
-              🎯 Register Now & Stay Ready! 🎯
-            </span>
-          </div>
+          <p className="text-sm mb-2 text-white/90">
+            Next Schedule for Trials will be announced soon!
+          </p>
+          <p className="text-xs text-sport-bright-yellow font-medium">
+            Spot Registrations Available • Follow Instagram for Updates
+          </p>
         </div>
       </div>
 
       {/* Step Content */}
       {currentStep === 1 && (
-        <form onSubmit={handleSubmit} className="space-y-6" id="step-panel-1" role="tabpanel" aria-labelledby="step-1">
-          {/* Enhanced Form fields */}
-          <div className="space-y-3">
-            <label htmlFor="full_name" className="block text-sm font-semibold text-gray-800 flex items-center gap-2">
-              <User className="w-4 h-4 text-sport-electric-blue" />
-              Full Name <span className="text-sport-energy-orange">*</span>
-            </label>
-            <input
-              type="text"
-              id="full_name"
-              name="full_name"
-              value={formData.full_name}
-              onChange={handleInputChange}
-              placeholder="Enter your full name"
-              className="w-full px-3 sm:px-4 py-3 sm:py-4 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-sport-electric-blue focus:border-sport-electric-blue bg-white shadow-sm transition-all duration-200 hover:border-sport-electric-blue/50 min-h-[48px] text-base"
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email Address <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              placeholder="Enter your email address"
-              className="w-full px-3 sm:px-4 py-3 sm:py-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[48px] text-base"
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-              Phone Number <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleInputChange}
-              placeholder="Enter 10-digit mobile number"
-              className="w-full px-3 sm:px-4 py-3 sm:py-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[48px] text-base"
-              maxLength={10}
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="date_of_birth" className="block text-sm font-medium text-gray-700">Date of Birth</label>
-            <input
-              type="date"
-              id="date_of_birth"
-              name="date_of_birth"
-              value={formData.date_of_birth}
-              onChange={handleInputChange}
-              max={todayYMD()}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
-
+        <form onSubmit={handleSubmit} className="space-y-4" id="step-panel-1" role="tabpanel" aria-labelledby="step-1">
+          {/* Compact Form Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
+            {/* Full Name */}
+            <div className="space-y-1">
+              <label htmlFor="full_name" className="block text-sm font-medium text-gray-700 flex items-center gap-1">
+                <User className="w-3 h-3 text-sport-electric-blue" />
+                Full Name <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="full_name"
+                name="full_name"
+                value={formData.full_name}
+                onChange={handleInputChange}
+                placeholder="Enter full name"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-sport-electric-blue focus:border-sport-electric-blue text-sm transition-colors"
+                required
+              />
+            </div>
+
+            {/* Email */}
+            <div className="space-y-1">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email Address <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="Enter email"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm transition-colors"
+                required
+              />
+            </div>
+
+            {/* Phone */}
+            <div className="space-y-1">
+              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                Phone Number <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                placeholder="10-digit number"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm transition-colors"
+                maxLength={10}
+                required
+              />
+            </div>
+
+            {/* Date of Birth */}
+            <div className="space-y-1">
+              <label htmlFor="date_of_birth" className="block text-sm font-medium text-gray-700">
+                Date of Birth
+              </label>
+              <input
+                type="date"
+                id="date_of_birth"
+                name="date_of_birth"
+                value={formData.date_of_birth}
+                onChange={handleInputChange}
+                max={todayYMD()}
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm transition-colors"
+              />
+            </div>
+
+            {/* State */}
+            <div className="space-y-1">
               <label htmlFor="state" className="block text-sm font-medium text-gray-700">
                 State <span className="text-red-500">*</span>
               </label>
@@ -603,7 +591,7 @@ const PlayerRegistrationStepper = () => {
                 name="state"
                 value={formData.state}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm transition-colors"
                 required
               >
                 <option value="">Select State</option>
@@ -621,7 +609,8 @@ const PlayerRegistrationStepper = () => {
               </select>
             </div>
 
-            <div className="space-y-2">
+            {/* City */}
+            <div className="space-y-1">
               <label htmlFor="city" className="block text-sm font-medium text-gray-700">
                 City <span className="text-red-500">*</span>
               </label>
@@ -630,41 +619,24 @@ const PlayerRegistrationStepper = () => {
                 name="city"
                 value={formData.city}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm transition-colors"
                 required
               >
                 <option value="">Select City</option>
                 <option value="Ahmedabad">Ahmedabad</option>
-                <option value="Anantapur">Anantapur</option>
                 <option value="Bangalore">Bangalore</option>
                 <option value="Chennai">Chennai</option>
                 <option value="Delhi">Delhi</option>
-                <option value="Guntur">Guntur</option>
                 <option value="Hyderabad">Hyderabad</option>
                 <option value="Jaipur">Jaipur</option>
-                <option value="Kakinada">Kakinada</option>
-                <option value="Karimnagar">Karimnagar</option>
-                <option value="Khammam">Khammam</option>
                 <option value="Kolkata">Kolkata</option>
-                <option value="Kurnool">Kurnool</option>
-                <option value="Lucknow">Lucknow</option>
-                <option value="Mahbubnagar">Mahbubnagar</option>
                 <option value="Mumbai">Mumbai</option>
-                <option value="Nellore">Nellore</option>
-                <option value="Nizamabad">Nizamabad</option>
                 <option value="Pune">Pune</option>
-                <option value="Rajahmundry">Rajahmundry</option>
-                <option value="Secunderabad">Secunderabad</option>
-                <option value="Tirupati">Tirupati</option>
-                <option value="Visakhapatnam">Visakhapatnam</option>
-                <option value="Vijayawada">Vijayawada</option>
-                <option value="Warangal">Warangal</option>
               </select>
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
+            {/* PIN Code */}
+            <div className="space-y-1">
               <label htmlFor="pincode" className="block text-sm font-medium text-gray-700">
                 PIN Code <span className="text-red-500">*</span>
               </label>
@@ -674,20 +646,23 @@ const PlayerRegistrationStepper = () => {
                 name="pincode"
                 value={formData.pincode}
                 onChange={handleInputChange}
-                placeholder="Enter PIN code"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="6-digit PIN"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm transition-colors"
                 maxLength={6}
               />
             </div>
 
-            <div className="space-y-2">
-              <label htmlFor="position" className="block text-sm font-medium text-gray-700">Player Type</label>
+            {/* Player Position */}
+            <div className="space-y-1">
+              <label htmlFor="position" className="block text-sm font-medium text-gray-700">
+                Player Type
+              </label>
               <select
                 id="position"
                 name="position"
                 value={formData.position}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm transition-colors"
               >
                 <option value="">Select Position</option>
                 <option value="Batting">Batting</option>
@@ -697,35 +672,35 @@ const PlayerRegistrationStepper = () => {
             </div>
           </div>
 
-          <div className="space-y-2">
-            <div className="flex items-start space-x-3">
+          {/* Terms and Conditions - Compact */}
+          <div className="pt-2 border-t border-gray-200">
+            <div className="flex items-start gap-2">
               <input
                 type="checkbox"
                 id="acceptTerms"
                 checked={acceptTerms}
                 onChange={(e) => setAcceptTerms(e.target.checked)}
-                className="mt-1 w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                className="mt-0.5 w-3.5 h-3.5 text-sport-electric-blue bg-white border-gray-300 rounded focus:ring-sport-electric-blue focus:ring-1"
                 required
               />
-              <div className="text-sm">
-                <label htmlFor="acceptTerms" className="text-gray-700 font-medium">
-                  I agree to the{' '}
-                  <TermsAndConditions
-                    trigger={
-                      <span className="text-blue-600 hover:text-blue-800 cursor-pointer underline">
-                        Terms & Conditions
-                      </span>
-                    }
-                    asLink={true}
-                  />
-                  {' '}and Privacy Policy
-                </label>
-              </div>
+              <label htmlFor="acceptTerms" className="text-xs text-gray-600 leading-relaxed">
+                I agree to the{' '}
+                <TermsAndConditions
+                  trigger={
+                    <span className="text-sport-electric-blue hover:text-sport-vibrant-green cursor-pointer underline font-medium">
+                      Terms & Conditions
+                    </span>
+                  }
+                  asLink={true}
+                />
+                {' '}and Privacy Policy <span className="text-red-500">*</span>
+              </label>
             </div>
           </div>
 
+          {/* Compact Error/Success Messages */}
           {message && (
-            <div className={`p-3 rounded-md text-sm font-medium ${
+            <div className={`p-2.5 rounded-md text-xs font-medium ${
               message.type === 'success'
                 ? 'bg-green-50 text-green-800 border border-green-200'
                 : 'bg-red-50 text-red-800 border border-red-200'
@@ -734,21 +709,22 @@ const PlayerRegistrationStepper = () => {
             </div>
           )}
 
-          <div className="flex gap-3 pt-6">
+          {/* Compact Submit Button */}
+          <div className="pt-3">
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex-1 bg-gradient-to-r from-sport-electric-blue to-sport-vibrant-green hover:from-sport-vibrant-green hover:to-sport-electric-blue disabled:from-gray-400 disabled:to-gray-500 text-white py-4 px-6 rounded-xl font-bold transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:transform-none disabled:shadow-none"
+              className="w-full bg-gradient-to-r from-sport-electric-blue to-sport-vibrant-green hover:from-sport-vibrant-green hover:to-sport-electric-blue disabled:from-gray-400 disabled:to-gray-500 text-white py-3 px-4 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 shadow-md hover:shadow-lg disabled:transform-none text-sm"
             >
               {isSubmitting ? (
                 <>
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                   <span>Registering...</span>
                 </>
               ) : (
                 <>
                   <span>Continue to Confirmation</span>
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>
@@ -757,80 +733,77 @@ const PlayerRegistrationStepper = () => {
       )}
 
       {currentStep === 2 && createdRegistration && (
-      <div className="space-y-6" id="step-panel-2" role="tabpanel" aria-labelledby="step-2">
-        <Card className="border-2 border-sport-electric-blue bg-gradient-to-br from-sport-electric-blue/5 to-sport-vibrant-green/5">
-          <CardContent className="p-6">
-            <h3 className="text-xl font-bold mb-6 flex items-center gap-3 text-sport-electric-blue">
-              <FileText className="w-6 h-6" />
-              Registration Summary
-            </h3>
-
-            <div className="space-y-3">
-              <div className="grid grid-cols-1 gap-3">
+        <div className="space-y-4" id="step-panel-2" role="tabpanel" aria-labelledby="step-2">
+          {/* Compact Registration Summary */}
+          <Card className="border border-sport-electric-blue/30 bg-gradient-to-br from-sport-electric-blue/5 to-sport-vibrant-green/5">
+            <CardContent className="p-4">
+              <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-sport-electric-blue">
+                <FileText className="w-5 h-5" />
+                Registration Summary
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
                 <div><strong>Name:</strong> {createdRegistration.full_name}</div>
                 <div><strong>Email:</strong> {createdRegistration.email}</div>
                 <div><strong>Phone:</strong> {createdRegistration.phone}</div>
-                <div><strong>Date of Birth:</strong> {createdRegistration.date_of_birth}</div>
                 <div><strong>State:</strong> {createdRegistration.state}</div>
                 <div><strong>City:</strong> {createdRegistration.city}</div>
-                <div><strong>Position:</strong> <Badge variant="outline">{createdRegistration.position}</Badge></div>
-                {createdRegistration.pincode && <div><strong>PIN Code:</strong> {createdRegistration.pincode}</div>}
+                <div><strong>Position:</strong> <Badge variant="outline" className="text-xs">{createdRegistration.position}</Badge></div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        <Card className="border-2 border-sport-vibrant-green bg-gradient-to-br from-sport-vibrant-green/5 to-sport-electric-blue/5">
-          <CardContent className="p-6">
-            <h3 className="text-xl font-bold mb-6 flex items-center gap-3 text-sport-vibrant-green">
-              <Shield className="w-6 h-6" />
-              Payment Summary
-            </h3>
-
-            <div className="space-y-4">
-              <div className="flex justify-between items-center text-2xl font-bold p-4 bg-gradient-to-r from-sport-vibrant-green/10 to-sport-electric-blue/10 rounded-lg border border-sport-vibrant-green/20">
-                <span>Total Amount to be Paid</span>
-                <span className="text-sport-vibrant-green">₹{totalAmount}</span>
+          {/* Compact Payment Summary */}
+          <Card className="border border-sport-vibrant-green/30 bg-gradient-to-br from-sport-vibrant-green/5 to-sport-electric-blue/5">
+            <CardContent className="p-4">
+              <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-sport-vibrant-green">
+                <Shield className="w-5 h-5" />
+                Payment Summary
+              </h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center text-xl font-bold p-3 bg-gradient-to-r from-sport-vibrant-green/10 to-sport-electric-blue/10 rounded-lg border border-sport-vibrant-green/20">
+                  <span>Total Amount</span>
+                  <span className="text-sport-vibrant-green">₹{totalAmount}</span>
+                </div>
+                <div className="text-xs space-y-1.5 p-3 bg-gray-50 rounded-lg">
+                  <div className="flex justify-between">
+                    <span>Registration Fee:</span>
+                    <span className="font-medium">₹{baseAmount}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>GST ({gstPercentage}%):</span>
+                    <span className="font-medium">₹{gstAmount}</span>
+                  </div>
+                  <div className="border-t pt-1.5 flex justify-between font-bold text-sport-electric-blue">
+                    <span>Total:</span>
+                    <span>₹{totalAmount}</span>
+                  </div>
+                </div>
               </div>
-              <div className="text-sm space-y-2 p-4 bg-gray-50 rounded-lg">
-                <div className="flex justify-between">
-                  <span>Registration Fee:</span>
-                  <span className="font-medium">₹{baseAmount}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>GST ({gstPercentage}%):</span>
-                  <span className="font-medium">₹{gstAmount}</span>
-                </div>
-                <div className="border-t pt-2 flex justify-between font-bold text-sport-electric-blue">
-                  <span>Total:</span>
-                  <span>₹{totalAmount}</span>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        <div className="flex gap-3 pt-6">
-          <button
-            onClick={handlePayment}
-            disabled={isProcessing}
-            className="flex-1 flex items-center justify-center gap-3 bg-gradient-to-r from-sport-energy-orange to-sport-bright-yellow hover:from-sport-bright-yellow hover:to-sport-energy-orange disabled:from-gray-400 disabled:to-gray-500 text-black py-4 px-6 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:transform-none disabled:shadow-none"
-          >
-            {isProcessing ? (
-              <>
-                <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
-                <span>Processing Payment...</span>
-              </>
-            ) : (
-              <>
-                <span>Proceed to Payment</span>
-                <ArrowRight className="w-5 h-5" />
-              </>
-            )}
-          </button>
+          {/* Compact Payment Button */}
+          <div className="pt-2">
+            <button
+              onClick={handlePayment}
+              disabled={isProcessing}
+              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-sport-energy-orange to-sport-bright-yellow hover:from-sport-bright-yellow hover:to-sport-energy-orange disabled:from-gray-400 disabled:to-gray-500 text-black py-3 px-4 rounded-lg font-semibold transition-all duration-200 shadow-md hover:shadow-lg disabled:transform-none text-sm"
+            >
+              {isProcessing ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+                  <span>Processing Payment...</span>
+                </>
+              ) : (
+                <>
+                  <span>Proceed to Payment</span>
+                  <ArrowRight className="w-4 h-4" />
+                </>
+              )}
+            </button>
+          </div>
         </div>
-      </div>
-    )}
+      )}
     
     {showSuccessModal && createdRegistration && paymentData && (
       <PaymentSuccessCelebration

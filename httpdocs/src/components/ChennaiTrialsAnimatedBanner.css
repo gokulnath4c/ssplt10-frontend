@@ -1,0 +1,166 @@
+/* ChennaiTrialsAnimatedBanner Component Styles */
+
+/* Canvas styles */
+.chennai-trials-canvas {
+  mix-blend-mode: screen;
+}
+
+/* Floating geometric elements positioning */
+.floating-geometric-element {
+  position: absolute;
+  pointer-events: none;
+}
+
+.floating-geometric-element:nth-child(1) {
+  left: 15%;
+  top: 20%;
+}
+
+.floating-geometric-element:nth-child(2) {
+  left: 35%;
+  top: 35%;
+}
+
+.floating-geometric-element:nth-child(3) {
+  left: 55%;
+  top: 50%;
+}
+
+.floating-geometric-element:nth-child(4) {
+  left: 75%;
+  top: 65%;
+}
+
+/* Parallax effect styles */
+.chennai-trials-banner {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+}
+
+/* Background glow elements with animation delays */
+.banner-glow-element {
+  position: absolute;
+  border-radius: 50%;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.banner-glow-element:nth-child(1) {
+  top: 2.5rem;
+  left: 2.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: rgb(99 102 241);
+  box-shadow: 0 0 2rem rgb(99 102 241 / 0.6);
+}
+
+.banner-glow-element:nth-child(2) {
+  top: 5rem;
+  right: 5rem;
+  width: 2rem;
+  height: 2rem;
+  background-color: rgb(6 182 212);
+  box-shadow: 0 0 2rem rgb(6 182 212 / 0.6);
+  animation-delay: 1s;
+}
+
+.banner-glow-element:nth-child(3) {
+  bottom: 2.5rem;
+  left: 5rem;
+  width: 1rem;
+  height: 1rem;
+  background-color: rgb(147 51 234);
+  box-shadow: 0 0 2rem rgb(147 51 234 / 0.6);
+  animation-delay: 2s;
+}
+
+.banner-glow-element:nth-child(4) {
+  bottom: 5rem;
+  right: 2.5rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: rgb(16 185 129);
+  box-shadow: 0 0 2rem rgb(16 185 129 / 0.6);
+  animation-delay: 0.5s;
+}
+
+/* Gradient text styles for the title */
+.chennai-trials-title {
+  background: linear-gradient(135deg, #3730a3, #7c3aed, #0891b2, #059669);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 300% 300%;
+  animation: gradientShift 4s ease-in-out infinite;
+}
+
+/* Animation keyframes */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 640px) {
+  .floating-geometric-element:nth-child(1) {
+    left: 10%;
+    top: 15%;
+  }
+
+  .floating-geometric-element:nth-child(2) {
+    left: 30%;
+    top: 30%;
+  }
+
+  .floating-geometric-element:nth-child(3) {
+    left: 50%;
+    top: 45%;
+  }
+
+  .floating-geometric-element:nth-child(4) {
+    left: 70%;
+    top: 60%;
+  }
+
+  .banner-glow-element:nth-child(1) {
+    top: 1.5rem;
+    left: 1.5rem;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .banner-glow-element:nth-child(2) {
+    top: 3rem;
+    right: 3rem;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .banner-glow-element:nth-child(3) {
+    bottom: 1.5rem;
+    left: 3rem;
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  .banner-glow-element:nth-child(4) {
+    bottom: 3rem;
+    right: 1.5rem;
+    width: 1rem;
+    height: 1rem;
+  }
+}

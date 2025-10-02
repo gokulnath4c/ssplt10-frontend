@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import PaymentSuccessCelebration from './PaymentSuccessCelebration';
 import TermsAndConditions from './TermsAndConditions';
-import GullyToGloryAnnouncement from './GullyToGloryAnnouncement';
 import { razorpayService, type RazorpayPaymentFailedError, type RazorpayPaymentSuccessResponse } from '@/integrations/razorpayService';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from '@/hooks/useAuth';
-import { googleAnalytics } from '@/utils/googleAnalytics';
 import {
   CheckCircle,
   CreditCard,
@@ -65,8 +63,8 @@ const PlayerRegistrationStepper = () => {
   const { toast } = useToast();
   const { user } = useAuth();
 
-  const envFee = Number(import.meta.env.VITE_REGISTRATION_FEE ?? (import.meta.env.MODE === 'production' ? 5 : 5));
-  const baseAmount = (Number.isFinite(envFee) && envFee > 0 ? Math.round(envFee) : (adminSettings?.registration_fee ?? 5));
+  const envFee = Number(import.meta.env.VITE_REGISTRATION_FEE ?? (import.meta.env.MODE === 'production' ? 699 : 699));
+  const baseAmount = (Number.isFinite(envFee) && envFee > 0 ? Math.round(envFee) : (adminSettings?.registration_fee ?? 699));
   const gstPercentage = adminSettings?.gst_percentage || 18;
   const gstAmount = Math.round(baseAmount * gstPercentage / 100);
   const totalAmount = baseAmount + gstAmount;
@@ -92,16 +90,16 @@ const PlayerRegistrationStepper = () => {
 
         if (error) {
           console.error('Error fetching admin settings:', error);
-          setAdminSettings({ registration_fee: 5, gst_percentage: 18 });
+          setAdminSettings({ registration_fee: 699, gst_percentage: 18 });
         } else {
           setAdminSettings({
-            registration_fee: (data && typeof data.registration_fee === 'number') ? data.registration_fee : 5,
+            registration_fee: (data && typeof data.registration_fee === 'number') ? data.registration_fee : 699,
             gst_percentage: (data && typeof data.gst_percentage === 'number') ? data.gst_percentage : 18
           });
         }
       } catch (error) {
         console.error('Error fetching admin settings:', error);
-        setAdminSettings({ registration_fee: 5, gst_percentage: 18 });
+        setAdminSettings({ registration_fee: 699, gst_percentage: 18 });
       } finally {
         setLoadingSettings(false);
       }
@@ -120,12 +118,6 @@ const PlayerRegistrationStepper = () => {
     }
   }, [user, formData.email]);
 
-  // Track registration start when component mounts
-  useEffect(() => {
-    googleAnalytics.trackRegistrationStart({
-      player_email: formData.email || user?.email,
-    });
-  }, []);
 
   // Load Razorpay script when reaching confirmation step (step 2)
   useEffect(() => {
@@ -275,15 +267,6 @@ const PlayerRegistrationStepper = () => {
       setCreatedRegistration(data[0]);
       setCurrentStep(2); // Move to confirmation step
 
-      // Track successful registration
-      googleAnalytics.trackRegistrationComplete({
-        player_id: data[0].id,
-        player_name: data[0].full_name,
-        player_email: data[0].email,
-        player_position: data[0].position,
-        player_state: data[0].state,
-        player_city: data[0].city,
-      });
     } catch (error: any) {
       console.error('Registration error:', error);
 
@@ -317,18 +300,6 @@ const PlayerRegistrationStepper = () => {
       console.log('🎯 Payment button clicked for registration:', createdRegistration.id);
       console.log('💰 Total amount to charge:', totalAmount);
 
-      // Track payment initiation
-      googleAnalytics.trackPaymentInitiated({
-        amount: totalAmount,
-        currency: 'INR',
-      }, {
-        player_id: createdRegistration.id,
-        player_name: createdRegistration.full_name,
-        player_email: createdRegistration.email,
-        player_position: createdRegistration.position,
-        player_state: createdRegistration.state,
-        player_city: createdRegistration.city,
-      });
 
       const order = await razorpayService.createOrder(totalAmount, {
         registrationId: createdRegistration.id,
@@ -352,19 +323,6 @@ const PlayerRegistrationStepper = () => {
           setRazorpayModalOpen(false);
           setCurrentStep(2);
 
-          // Track payment cancellation
-          googleAnalytics.trackPaymentCancelled({
-            amount: totalAmount,
-            currency: 'INR',
-            payment_status: 'cancelled',
-          }, {
-            player_id: createdRegistration.id,
-            player_name: createdRegistration.full_name,
-            player_email: createdRegistration.email,
-            player_position: createdRegistration.position,
-            player_state: createdRegistration.state,
-            player_city: createdRegistration.city,
-          });
 
           toast({
             title: "Payment Cancelled",
@@ -389,21 +347,6 @@ const PlayerRegistrationStepper = () => {
 
             console.log('Payment verification and database update successful:', verificationResult);
 
-            // Track successful payment
-            googleAnalytics.trackPaymentCompleted({
-              payment_id: response.razorpay_payment_id,
-              order_id: response.razorpay_order_id,
-              amount: totalAmount,
-              currency: 'INR',
-              payment_status: 'completed',
-            }, {
-              player_id: createdRegistration.id,
-              player_name: createdRegistration.full_name,
-              player_email: createdRegistration.email,
-              player_position: createdRegistration.position,
-              player_state: createdRegistration.state,
-              player_city: createdRegistration.city,
-            });
 
             // Set payment data for success modal
             setPaymentData({
@@ -442,19 +385,6 @@ const PlayerRegistrationStepper = () => {
           setPaymentError(error?.description || error?.reason || 'Payment failed. Please try again.');
           setCurrentStep(2);
 
-          // Track payment failure
-          googleAnalytics.trackPaymentFailed({
-            amount: totalAmount,
-            currency: 'INR',
-            payment_status: 'failed',
-          }, error?.description || error?.reason || 'Payment failed', {
-            player_id: createdRegistration.id,
-            player_name: createdRegistration.full_name,
-            player_email: createdRegistration.email,
-            player_position: createdRegistration.position,
-            player_state: createdRegistration.state,
-            player_city: createdRegistration.city,
-          });
 
           toast({
             title: "Payment Failed",
@@ -499,9 +429,6 @@ const PlayerRegistrationStepper = () => {
 
   return (
     <div className="space-y-grid-3" role="main" aria-label="Player Registration Form">
-
-      {/* Gully to Glory Announcement - prominently displayed at the top */}
-      <GullyToGloryAnnouncement />
 
       {/* Step indicator for screen readers */}
       <div className="sr-only" aria-live="polite" aria-atomic="true">
@@ -762,7 +689,6 @@ const PlayerRegistrationStepper = () => {
               type="submit"
               disabled={isSubmitting}
               className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white py-3 px-grid-2 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center gap-grid-1"
-              onClick={() => googleAnalytics.trackButtonClick('continue_to_confirmation', 'registration_form_step_1')}
             >
               {isSubmitting ? (
                 <>
@@ -827,7 +753,6 @@ const PlayerRegistrationStepper = () => {
         <div className="flex gap-grid-1 pt-3">
           <button
             onClick={() => {
-              googleAnalytics.trackButtonClick('proceed_to_payment', 'registration_form_step_2');
               handlePayment();
             }}
             className="w-full flex items-center justify-center gap-grid-1 bg-blue-600 hover:bg-blue-700 text-white py-3 px-grid-2 rounded-lg font-semibold transition-all duration-200"

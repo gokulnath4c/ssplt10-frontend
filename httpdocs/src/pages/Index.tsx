@@ -61,11 +61,11 @@ const Index = () => {
       {showCricketBanner && (
         <CricketTrialsBanner
           announcement={{
-            title: "Upcoming Chennai Trials!",
-            venue: "Throttle Sports Academy, Manapakkam",
-            date: "Sunday, 28 September 2025",
-            body: "Calling all aspiring players waiting for their next big chance!",
-            callout: "Players waiting — this one's for you",
+            title: "#gully2glory",
+            venue: "FOR ALL THE STATES",
+            date: "Dear Players",
+            body: "Round 1 - Batch 1, Tamil Nadu over\nRound 1 - Batch 1, Andhra Pradesh now its your turn",
+            callout: "REGISTRATIONS ARE OPEN TILL 15TH NOV!",
             ctaText: "Register Now"
           }}
           onRegister={() => {

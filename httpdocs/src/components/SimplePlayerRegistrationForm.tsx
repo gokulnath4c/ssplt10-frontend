@@ -24,7 +24,7 @@ const SimplePlayerRegistrationForm: React.FC = () => {
   const [razorpayLoaded, setRazorpayLoaded] = useState<boolean>(!!(typeof window !== "undefined" && (window as any).Razorpay));
   const [scriptLoadError, setScriptLoadError] = useState<string | null>(null);
 
-  const AMOUNT_RUPEES = Number(import.meta.env.VITE_REGISTRATION_FEE ?? 10) || 10; // fallback to 10 if not set
+  const AMOUNT_RUPEES = Number(import.meta.env.VITE_REGISTRATION_FEE ?? 699) || 699; // fallback to 699 if not set
 
   // Load Razorpay script if not already present
   useEffect(() => {
@@ -175,104 +175,140 @@ const SimplePlayerRegistrationForm: React.FC = () => {
   const isDisabled = isPaymentProcessing || !razorpayLoaded || !!scriptLoadError;
   
   return (
-    <form onSubmit={handleSubmit} className="max-w-[400px] mx-auto">
-      <h2>Player Registration</h2>
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4">
+      <div className="text-center mb-4">
+        <h2 className="text-xl font-bold text-sport-electric-blue mb-1">Player Registration</h2>
+        <p className="text-sm text-gray-600">Quick registration with payment</p>
+      </div>
 
-      {!razorpayLoaded && (
-        <p className="mb-2.5 text-[#555] text-xs" aria-live="polite">
-          Preparing secure payment...
-        </p>
+      {/* Loading/Error States - Compact */}
+      {!razorpayLoaded && !scriptLoadError && (
+        <div className="text-center py-2">
+          <div className="inline-flex items-center gap-2 text-xs text-gray-500">
+            <div className="w-3 h-3 border border-gray-300 border-t-sport-electric-blue rounded-full animate-spin"></div>
+            Preparing secure payment...
+          </div>
+        </div>
       )}
       {scriptLoadError && (
-        <p className="mb-2.5 text-[crimson] text-xs" role="alert" aria-live="assertive">
+        <div className="p-2.5 bg-red-50 border border-red-200 rounded-md text-xs text-red-800 text-center">
           {scriptLoadError}
-        </p>
+        </div>
       )}
 
-      <div className="mb-2.5">
-        <label htmlFor="name">Name:</label>
-        <input
-          id="name"
-          type="text"
-          name="name"
-          value={playerData.name}
-          onChange={handleInputChange}
-          placeholder="Enter your full name"
-          autoComplete="name"
-          required
-          className="w-full p-2"
-        />
+      {/* Compact Form Grid */}
+      <div className="grid grid-cols-1 gap-3">
+        <div className="space-y-1">
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+            Full Name <span className="text-red-500">*</span>
+          </label>
+          <input
+            id="name"
+            type="text"
+            name="name"
+            value={playerData.name}
+            onChange={handleInputChange}
+            placeholder="Enter full name"
+            autoComplete="name"
+            required
+            className="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-sport-electric-blue focus:border-sport-electric-blue text-sm transition-colors"
+          />
+        </div>
+
+        <div className="space-y-1">
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            Email Address <span className="text-red-500">*</span>
+          </label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            value={playerData.email}
+            onChange={handleInputChange}
+            placeholder="Enter email"
+            autoComplete="email"
+            required
+            className="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm transition-colors"
+          />
+        </div>
+
+        <div className="space-y-1">
+          <label htmlFor="contact" className="block text-sm font-medium text-gray-700">
+            Phone Number <span className="text-red-500">*</span>
+          </label>
+          <input
+            id="contact"
+            type="tel"
+            name="contact"
+            value={playerData.contact}
+            onChange={handleInputChange}
+            placeholder="10-digit number"
+            pattern="[0-9]{10}"
+            inputMode="numeric"
+            maxLength={10}
+            autoComplete="tel"
+            title="Enter 10-digit mobile number"
+            required
+            className="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm transition-colors"
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <div className="space-y-1">
+            <label htmlFor="age" className="block text-sm font-medium text-gray-700">
+              Age
+            </label>
+            <input
+              id="age"
+              type="number"
+              name="age"
+              value={playerData.age || ''}
+              onChange={handleInputChange}
+              placeholder="Age"
+              inputMode="numeric"
+              min={0}
+              className="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm transition-colors"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label htmlFor="team" className="block text-sm font-medium text-gray-700">
+              Team
+            </label>
+            <input
+              id="team"
+              type="text"
+              name="team"
+              value={playerData.team}
+              onChange={handleInputChange}
+              placeholder="Team (optional)"
+              className="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm transition-colors"
+            />
+          </div>
+        </div>
       </div>
 
-      <div className="mb-2.5">
-        <label htmlFor="email">Email:</label>
-        <input
-          id="email"
-          type="email"
-          name="email"
-          value={playerData.email}
-          onChange={handleInputChange}
-          placeholder="Enter your email address"
-          autoComplete="email"
-          required
-          className="w-full p-2"
-        />
+      {/* Compact Payment Button */}
+      <div className="pt-2">
+        <button
+          type="submit"
+          disabled={isDisabled}
+          className={`w-full py-3 px-4 rounded-lg font-semibold transition-all duration-200 text-sm ${
+            isDisabled
+              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              : 'bg-gradient-to-r from-sport-electric-blue to-sport-vibrant-green hover:from-sport-vibrant-green hover:to-sport-electric-blue text-white shadow-md hover:shadow-lg transform hover:scale-[1.02]'
+          }`}
+        >
+          {isPaymentProcessing ? (
+            <div className="flex items-center justify-center gap-2">
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <span>Processing...</span>
+            </div>
+          ) : (
+            `Register & Pay Now (₹${AMOUNT_RUPEES})`
+          )}
+        </button>
       </div>
-
-      <div className="mb-2.5">
-        <label htmlFor="contact">Contact:</label>
-        <input
-          id="contact"
-          type="tel"
-          name="contact"
-          value={playerData.contact}
-          onChange={handleInputChange}
-          placeholder="Enter 10-digit mobile number"
-          pattern="[0-9]{10}"
-          inputMode="numeric"
-          maxLength={10}
-          autoComplete="tel"
-          title="Enter 10-digit mobile number"
-          required
-          className="w-full p-2"
-        />
-      </div>
-
-      <div className="mb-2.5">
-        <label htmlFor="age">Age:</label>
-        <input
-          id="age"
-          type="number"
-          name="age"
-          value={playerData.age}
-          onChange={handleInputChange}
-          placeholder="Enter your age"
-          inputMode="numeric"
-          min={0}
-          className="w-full p-2"
-        />
-      </div>
-
-      <div className="mb-2.5">
-        <label htmlFor="team">Team:</label>
-        <input
-          id="team"
-          type="text"
-          name="team"
-          value={playerData.team}
-          onChange={handleInputChange}
-          placeholder="Enter team name (optional)"
-          className="w-full p-2"
-        />
-      </div>
-
-      <button
-        type="submit"
-        disabled={isDisabled}
-        className={`px-5 py-2.5 w-full text-white rounded-[5px] ${isDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-[#3399cc] hover:bg-[#2d89b8] cursor-pointer'}`}
-      >
-        {isPaymentProcessing ? "Processing..." : `Register & Pay Now (₹${AMOUNT_RUPEES})`}
-      </button>
     </form>
   );
 };
