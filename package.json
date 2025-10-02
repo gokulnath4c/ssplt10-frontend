@@ -29,7 +29,8 @@
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
-    "husky": "^9.1.7"
+    "husky": "^9.1.7",
+    "terser": "^5.44.0"
   },
   "dependencies": {
     "cors": "^2.8.5",
